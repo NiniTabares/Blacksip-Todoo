@@ -362,8 +362,9 @@ class PayrollDianDocument(models.Model):
     def _set_filenames(self):
         #nnnnnnnnnn: NIT del Facturador Electrónico sin DV, de diez (10) dígitos
         # alineados a la derecha y relleno con ceros a la izquierda.
+        nit = str(self.company_id.nit_e_payroll)
         if self.company_id.nit_e_payroll:
-            nnnnnnnnnn = self.company_id.nit_e_payroll.zfill(10)
+            nnnnnnnnnn = nit.zfill(10)
         else:
             raise ValidationError("The company identification document is not "
                                   "established in the partner.\n\nGo to Contacts > "
