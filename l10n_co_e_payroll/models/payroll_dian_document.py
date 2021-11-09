@@ -116,7 +116,7 @@ class PayrollDianDocument(models.Model):
             qr_data = "NumNIE: " + number if number else 'NO_VALIDADA'
             qr_data += "\nFecNIE: " + str(IssueDate) if str(IssueDate) else ''
             qr_data += "\nHorNIE: " + str(IssueTime) if str(IssueTime) else ''
-            qr_data += "\nNitNIE: " + nit_fac if nit_fac else ''
+            qr_data += "\nNitNIE: " + str(nit_fac) if str(nit_fac) else ''
             qr_data += "\nDocEmp: " + nit_adq if nit_adq else ''
             qr_data += "\nValDev: " + '{:.2f}'.format(ValDev)
             qr_data += "\nValDed: " + '{:.2f}'.format(ValDed)
