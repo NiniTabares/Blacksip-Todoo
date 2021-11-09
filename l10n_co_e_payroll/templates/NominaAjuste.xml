@@ -45,7 +45,7 @@
 	                    EncripCUNE="CUNE-SHA384"
 	                    FechaGen="{{IssueDate}}"
 	                    HoraGen="{{IssueTime}}"
-	                    PeriodoNomina="{{NominaGeneral.tipo_nomina}}"
+	                    PeriodoNomina="{{NominaGeneral.periodo_nomina}}"
 	                    TipoMoneda="{{NominaGeneral.tipo_monedas}}"
 	                    TRM="{{NominaGeneral.trm}}"/>
 		<Notas>{{NominaGeneral.notas}}</Notas>
