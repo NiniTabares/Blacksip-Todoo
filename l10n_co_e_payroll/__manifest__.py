@@ -9,7 +9,7 @@
     "author": "Diego Carvajal Github@diegoivanc",
     "website": "https://www.dracosoft.com.co",
     "license": "AGPL-3",
-    "summary": "Colombian E-Invoicing",
+    "summary": "Colombian E-Payroll",
     "depends": ["account"],
     'external_dependencies': {
         'python': [

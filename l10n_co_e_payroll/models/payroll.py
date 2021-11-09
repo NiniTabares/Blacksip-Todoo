@@ -18,6 +18,12 @@ class PayrollDian(models.Model):
         required=True
     )
 
+    tipo_documento = fields.Char(
+        string="Tipo Documento",
+        required=True,
+        default='13'
+    )
+
     tipo_contrato_trabajador = fields.Selection(
         string='Tipo contrato trabajador',
         selection=[('1', 'Termino Fijo'),
@@ -69,6 +75,10 @@ class PayrollDian(models.Model):
         string="Fecha liquidacion",
         required=True)
 
+    fecha_pago = fields.Date(
+        string="Fecha Pago",
+        required=True)
+
     prefijo = fields.Char(
         string="Prefijo",
         required=True)
@@ -97,14 +107,25 @@ class PayrollDian(models.Model):
         string="Dias trabajados",
         required=True)
 
-    tipo_moneda = fields.Selection(
-        string='Tipo moneda',
-        selection=[('cop', 'COP'), ],
+    tipo_monedas = fields.Char(
+        string='Tipo moneda',default='COP',
         required=True, )
 
     trm = fields.Float(
         string="TRM",
+        default='1',
         required=True)
+
+    periodo_nomina = fields.Selection(
+        string='Periodo Nomina',
+        selection=[('1', 'Semanal'),
+                   ('2', 'Decenal'),
+                   ('3', 'Catorcenal'),
+                   ('4', 'Quincenal'),
+                   ('5', 'Mensual'),
+                   ('6', 'Otro'),
+                   ],
+        required=True, default='1' )
 
     notas = fields.Text(
         string="Notas",

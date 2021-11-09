@@ -29,8 +29,8 @@
 	                    Consecutivo="{{NominaGeneral.consecutivo}}"
 	                    Numero="{{NominaGeneral.name}}"/>
 		<LugarGeneracionXML Pais="CO"
-	                    DepartamentoEstado="63"
-	                    MunicipioCiudad="63001"
+	                    DepartamentoEstado="{{empresa_departamento}}"
+	                    MunicipioCiudad="{{empresa_municipio}}"
 	                    Idioma="es"/>
 		<ProveedorXML RazonSocial="{{CompanyID}}"
 	              NIT="{{ProviderID}}"
@@ -38,48 +38,48 @@
 	              SoftwareID="{{SoftwareID}}"
 	              SoftwareSC="{{SoftwareSecurityCode}}"/>
 		<CodigoQR>https://catalogo-vpfe-hab.dian.gov.co/document/searchqr?documentkey={{CUNE}}</CodigoQR>
-		<InformacionGeneral Version="V1.0: Nota de Ajuste de Documento Soporte de Pago de Nómina Electrónica"
+		<InformacionGeneral Version="V1.0: Documento Soporte de Pago de Nómina Electrónica"
 	                    Ambiente="{{ProfileExecutionID}}"
 	                    TipoXML="{{NominaGeneral.tipo_nomina}}"
 	                    CUNE="{{CUNE}}"
 	                    EncripCUNE="CUNE-SHA384"
 	                    FechaGen="{{IssueDate}}"
 	                    HoraGen="{{IssueTime}}"
-	                    PeriodoNomina="5"
-	                    TipoMoneda="COP"
-	                    TRM="1"/>
-		<Notas>A</Notas>
+	                    PeriodoNomina="{{NominaGeneral.tipo_nomina}}"
+	                    TipoMoneda="{{NominaGeneral.tipo_monedas}}"
+	                    TRM="{{NominaGeneral.trm}}"/>
+		<Notas>{{NominaGeneral.notas}}</Notas>
 		<Empleador RazonSocial="{{CompanyID}}"
 	           NIT="{{ProviderID}}"
 	           DV="{{Nitdv}}"
 	           Pais="CO"
-	           DepartamentoEstado="63"
-	           MunicipioCiudad="63001"
-	           Direccion="calle 23"/>
-		<Trabajador TipoTrabajador="01"
-	            SubTipoTrabajador="00"
-	            AltoRiesgoPension="false"
-	            TipoDocumento="13"
+	           DepartamentoEstado="{{empresa_departamento}}"
+	           MunicipioCiudad="{{empresa_municipio}}"
+	           Direccion="{{empresa_direccion}}"/>
+		<Trabajador TipoTrabajador="{{NominaGeneral.tipo_trabajador}}"
+	            SubTipoTrabajador="{{NominaGeneral.subtipo_trabajador}}"
+	            AltoRiesgoPension="{{NominaGeneral.alto_riesgo_pension}}"
+	            TipoDocumento="{{NominaGeneral.tipo_documento}}"
 	            NumeroDocumento="{{NitAdquiriente}}"
-	            PrimerApellido="carvajal"
-	            SegundoApellido="gi"
-	            PrimerNombre="diego"
-	            OtrosNombres="juan"
-	            LugarTrabajoPais="CO"
-	            LugarTrabajoDepartamentoEstado="63"
-	            LugarTrabajoMunicipioCiudad="63001"
+	            PrimerApellido="{{NominaGeneral.primer_apellido or ' '}}"
+	            SegundoApellido="{{NominaGeneral.segundo_apellido or ' '}}"
+	            PrimerNombre="{{NominaGeneral.primer_nombre or ' '}}"
+	            OtrosNombres="{{NominaGeneral.segundo_nombre or ' '}}"
+	            LugarTrabajoPais="{{NominaGeneral.codigo_pais}}"
+	            LugarTrabajoDepartamentoEstado="{{NominaGeneral.codigo_dep_nomina}}"
+	            LugarTrabajoMunicipioCiudad="{{NominaGeneral.codigo_ciu_nomina}}"
 	            LugarTrabajoDireccion="A"
-	            SalarioIntegral="false"
+	            SalarioIntegral="{{NominaGeneral.salario_integral}}"
 	            TipoContrato="{{NominaGeneral.tipo_contrato_trabajador}}"
 	            Sueldo="{{NominaGeneral.sueldo_trabajado}}"
 	            CodigoTrabajador="{{NitAdquiriente}}"/>
 		<Pago Forma="1"
-	      Metodo="42"
-	      Banco="BANCO DE BOGOTA"
-	      TipoCuenta="Ahorros"
-	      NumeroCuenta="43293232"/>
+	      Metodo="{{NominaGeneral.metodo_pago.code}}"
+	      Banco="{{NominaGeneral.banco}}"
+	      TipoCuenta="{{NominaGeneral.tipo_cuenta}}"
+	      NumeroCuenta="{{NominaGeneral.numero_cuenta}}"/>
 		<FechasPagos>
-			<FechaPago>9999-12-31</FechaPago>
+			<FechaPago>{{NominaGeneral.fecha_pago}}</FechaPago>
 		</FechasPagos>
 		<Devengados>
 			<Basico DiasTrabajados="{{NominaGeneral.dias_trabajados}}"

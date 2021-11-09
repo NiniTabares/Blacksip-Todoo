@@ -20,6 +20,7 @@
                             <field name="consecutivo"/>
                             <separator string="Datos Empleado"/>
                             <field name="empleado"/>
+                            <field name="tipo_documento"/>
                             <field name="numero_documento"/>
                             <field name="primer_nombre"/>
                             <field name="segundo_nombre"/>
@@ -34,6 +35,7 @@
                             <field name="codigo_dep_nomina"/>
                             <field name="codigo_ciu_nomina"/>
                             <separator string="Forma De Pago"/>
+                            <field name="fecha_pago"/>
                             <field name="metodo_pago"/>
                             <field name="banco"/>
                             <field name="tipo_cuenta"/>
@@ -44,11 +46,12 @@
                             <field name="fecha_ini_pago"/>
                             <field name="fecha_fin_pago"/>
                             <field name="fecha_liquidacion"/>
+                            <field name="periodo_nomina"/>
                             <field name="tipo_nomina"/>
                             <field name="nota_ajuste" attrs="{'required': [('tipo_nomina', '=', '103')]}"/>
                             <field name="nomina_ajustar" attrs="{'required': [('tipo_nomina', '=', '103')]}"/>
                             <field name="dias_trabajados"/>
-                            <field name="tipo_moneda"/>
+                            <field name="tipo_monedas"/>
                             <field name="trm"/>
                             <field name="notas"/>
                             <field name="total_devengados"/>

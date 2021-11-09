@@ -386,9 +386,9 @@ class PayrollDianDocument(models.Model):
         zip_sent = out_invoice_sent + out_refund_sent + in_refund_sent
 
         xml_filename_prefix = 'nie'
-        dddddddd = str(out_invoice_sent + 1).zfill(8)
+        dddddddd = str(self.company_id.out_nomina_sent + 1).zfill(8)
 
-        zdddddddd = str(zip_sent + 1).zfill(8)
+        zdddddddd = str(self.company_id.out_nomina_sent + 1).zfill(8)
         nnnnnnnnnnpppaadddddddd = nnnnnnnnnn + aa + dddddddd
         znnnnnnnnnnpppaadddddddd = nnnnnnnnnn + aa + zdddddddd
 
@@ -425,8 +425,11 @@ class PayrollDianDocument(models.Model):
 
         supplier = self.company_id.partner_id
         customer = self.invoice_id.partner_id
-        NitOFE = supplier.identification_document
-        Nitdv = supplier.check_digit
+        NitOFE = self.company_id.nit_e_payroll
+        Nitdv = self.company_id.dv_e_payroll
+        empresa_departamento = self.company_id.departamento
+        empresa_municipio = self.company_id.municipio
+        empresa_direccion = self.company_id.street
         NameCompany = supplier.name
         NitAdq = self.nomina_id.numero_documento
 
@@ -500,6 +503,9 @@ class PayrollDianDocument(models.Model):
             'ProviderID': NitOFE,
             'NitAdquiriente': NitAdq,
             'Nitdv': Nitdv,
+            'empresa_departamento': empresa_departamento,
+            'empresa_municipio': empresa_municipio,
+            'empresa_direccion': empresa_direccion,
             'SoftwareID': IdSoftware,
             'SoftwareSecurityCode': software_security_code['SoftwareSecurityCode'],
             'QRCodeURL': QRCodeURL,

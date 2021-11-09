@@ -24,8 +24,8 @@
 	                    Consecutivo="{{NominaGeneral.consecutivo}}"
 	                    Numero="{{NominaGeneral.name}}"/>
 	<LugarGeneracionXML Pais="CO"
-	                    DepartamentoEstado="63"
-	                    MunicipioCiudad="63001"
+	                    DepartamentoEstado="{{empresa_departamento}}"
+	                    MunicipioCiudad="{{empresa_municipio}}"
 	                    Idioma="es"/>
 	<ProveedorXML RazonSocial="{{CompanyID}}"
 	              NIT="{{ProviderID}}"
@@ -41,21 +41,21 @@
 	                    EncripCUNE="CUNE-SHA384"
 	                    FechaGen="{{IssueDate}}"
 	                    HoraGen="{{IssueTime}}"
-	                    PeriodoNomina="5"
-	                    TipoMoneda="COP"
-	                    TRM="1"/>
-	<Notas>A</Notas>
+	                    PeriodoNomina="{{NominaGeneral.tipo_nomina}}"
+	                    TipoMoneda="{{NominaGeneral.tipo_monedas}}"
+	                    TRM="{{NominaGeneral.trm}}"/>
+	<Notas>{{NominaGeneral.notas}}</Notas>
 	<Empleador RazonSocial="{{CompanyID}}"
 	           NIT="{{ProviderID}}"
 	           DV="{{Nitdv}}"
 	           Pais="CO"
-	           DepartamentoEstado="63"
-	           MunicipioCiudad="63001"
-	           Direccion="calle 23"/>
+	           DepartamentoEstado="{{empresa_departamento}}"
+	           MunicipioCiudad="{{empresa_municipio}}"
+	           Direccion="{{empresa_direccion}}"/>
 	<Trabajador TipoTrabajador="{{NominaGeneral.tipo_trabajador}}"
 	            SubTipoTrabajador="{{NominaGeneral.subtipo_trabajador}}"
 	            AltoRiesgoPension="{{NominaGeneral.alto_riesgo_pension}}"
-	            TipoDocumento="13"
+	            TipoDocumento="{{NominaGeneral.tipo_documento}}"
 	            NumeroDocumento="{{NitAdquiriente}}"
 	            PrimerApellido="{{NominaGeneral.primer_apellido or ' '}}"
 	            SegundoApellido="{{NominaGeneral.segundo_apellido or ' '}}"
@@ -75,7 +75,7 @@
 	      TipoCuenta="{{NominaGeneral.tipo_cuenta}}"
 	      NumeroCuenta="{{NominaGeneral.numero_cuenta}}"/>
 	<FechasPagos>
-		<FechaPago>2021-10-28</FechaPago>
+		<FechaPago>{{NominaGeneral.fecha_pago}}</FechaPago>
 	</FechasPagos>
 	<Devengados>
 		<Basico DiasTrabajados="{{NominaGeneral.dias_trabajados}}"

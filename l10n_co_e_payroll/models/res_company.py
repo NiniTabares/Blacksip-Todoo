@@ -39,6 +39,10 @@ class ResCompany(models.Model):
         string='E-invoice Email From',
         help="Enter the e-invoice sender's email.")
     out_nomina_sent = fields.Integer()
+    nit_e_payroll = fields.Integer()
+    dv_e_payroll = fields.Integer()
+    departamento = fields.Char()
+    municipio = fields.Char()
 
     @api.onchange('payroll_signature_policy_url')
     def onchange_signature_policy_url(self):
