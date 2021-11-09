@@ -804,6 +804,7 @@ class PayrollDian(models.Model):
 
     def post(self):
         _logger.info('record.company_id.epayroll_enabled')
+        _logger.info('record.company_id.epayroll_enabled')
         for record in self:
             _logger.info(record.company_id.epayroll_enabled)
             if record.company_id.epayroll_enabled:
