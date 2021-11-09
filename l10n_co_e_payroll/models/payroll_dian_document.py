@@ -101,7 +101,7 @@ class PayrollDianDocument(models.Model):
             date_format = str(record.nomina_id.create_date)[0:19]
             create_date = datetime.strptime(date_format, '%Y-%m-%d %H:%M:%S')
             create_date = create_date.replace(tzinfo=timezone('UTC'))
-            nit_fac = record.company_id.partner_id.identification_document
+            nit_fac = record.company_id.nit_e_payroll
             nit_adq = record.nomina_id.numero_documento
             cufe = record.cufe_cude
             number = record.nomina_id.name
