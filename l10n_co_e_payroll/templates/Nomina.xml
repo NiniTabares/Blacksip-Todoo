@@ -80,8 +80,10 @@
 	<Devengados>
 		<Basico DiasTrabajados="{{NominaGeneral.dias_trabajados}}"
 		        SueldoTrabajado="{{NominaGeneral.sueldo_trabajado}}"/>
+		{% if NominaGeneral.auxilio_transporte > 0 %}
 		<Transporte AuxilioTransporte="{{NominaGeneral.auxilio_transporte}}"
 		/>
+		{% endif %}
 		{% if NominaGeneral.cantidad_hed > 0 %}
 		<HEDs>
 			<HED HoraInicio="{{NominaGeneral.fecha_hora_inicio_hed|replace(' ', 'T')}}"
