@@ -195,6 +195,33 @@ class PayrollDianDocument(models.Model):
 
         return True
 
+    def action_GetStatusMulti(self):
+        wsdl = DIAN['wsdl-hab']
+
+        for record in self:
+            if record.company_id.profile_execution_payroll_id == '1':
+                wsdl = DIAN['wsdl']
+
+            GetStatus_values = record._get_GetStatus_values()
+            GetStatus_values['To'] = wsdl.replace('?wsdl', '')
+            xml_soap_with_signature = global_functions.get_xml_soap_with_signature(
+                global_functions.get_template_xml(GetStatus_values, 'GetStatus'),
+                GetStatus_values['Id'],
+                record.company_id.payroll_certificate_file,
+                record.company_id.payroll_certificate_password)
+
+            response = post(
+                wsdl,
+                headers={'content-type': 'application/soap+xml;charset=utf-8'},
+                data=etree.tostring(xml_soap_with_signature, encoding="unicode"))
+
+            if response.status_code == 200:
+                record._get_status_response(response, send_mail=False)
+            else:
+                raise ValidationError(response.status_code)
+
+        return True
+
 
     def _get_pdf_file(self):
         template = self.env['ir.actions.report'].browse(self.company_id.report_template.id)
@@ -833,6 +860,39 @@ class PayrollDianDocument(models.Model):
         else:
             _logger.info('entro else')
             raise ValidationError(response.status_code)
+
+        return True
+
+    def action_GetStatusZipmulti(self):
+        wsdl = DIAN['wsdl-hab']
+
+
+        for record in self:
+            if record.company_id.profile_execution_payroll_id == '1':
+                wsdl = DIAN['wsdl']
+
+            GetStatusZip_values = record._get_GetStatusZip_values()
+            GetStatusZip_values['To'] = wsdl.replace('?wsdl', '')
+            xml_soap_with_signature = global_functions.get_xml_soap_with_signature(
+                global_functions.get_template_xml(GetStatusZip_values, 'GetStatusZip'),
+                GetStatusZip_values['Id'],
+                record.company_id.payroll_certificate_file,
+                record.company_id.payroll_certificate_password)
+
+            response = post(
+                wsdl,
+                headers={'content-type': 'application/soap+xml;charset=utf-8'},
+                data=etree.tostring(xml_soap_with_signature, encoding = "unicode"))
+            _logger.info('response.text')
+            _logger.info(response.status_code)
+            _logger.info(response.text)
+
+            if response.status_code == 200:
+                _logger.info('entro if')
+                record._get_status_response(response,send_mail=False)
+            else:
+                _logger.info('entro else')
+                raise ValidationError(response.status_code)
 
         return True
 

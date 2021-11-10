@@ -364,5 +364,38 @@
             parent="payroll_menu"
             sequence="2"/>
 
+        <record id="action_multi_nomina" model="ir.actions.server">
+            <field name="name">Nomina Validar</field>
+            <field name="model_id" ref="l10n_co_e_payroll.model_payroll_dian"/>
+            <field name="binding_model_id" ref="l10n_co_e_payroll.model_payroll_dian"/>
+            <field name="state">code</field>
+            <field name="code">
+                if records:
+                    records.post()
+            </field>
+        </record>
+
+        <record id="action_multi_verificadorzip" model="ir.actions.server">
+            <field name="name">Validar Zip</field>
+            <field name="model_id" ref="l10n_co_e_payroll.model_payroll_dian_document"/>
+            <field name="binding_model_id" ref="l10n_co_e_payroll.model_payroll_dian_document"/>
+            <field name="state">code</field>
+            <field name="code">
+                if records:
+                    records.action_GetStatusZipmulti()
+            </field>
+        </record>
+
+        <record id="action_multi_verificador" model="ir.actions.server">
+            <field name="name">Validar Produccion</field>
+            <field name="model_id" ref="l10n_co_e_payroll.model_payroll_dian_document"/>
+            <field name="binding_model_id" ref="l10n_co_e_payroll.model_payroll_dian_document"/>
+            <field name="state">code</field>
+            <field name="code">
+                if records:
+                    records.action_GetStatusMulti()
+            </field>
+        </record>
+
     </data>
 </odoo>
