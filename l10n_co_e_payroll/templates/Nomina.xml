@@ -32,7 +32,7 @@
 	              DV="{{Nitdv}}"
 	              SoftwareID="{{SoftwareID}}"
 	              SoftwareSC="{{SoftwareSecurityCode}}"/>
-	<CodigoQR>https://catalogo-vpfe-hab.dian.gov.co/document/searchqr?documentkey={{CUNE}}</CodigoQR>
+	<CodigoQR>https://catalogovpfe.dian.gov.co/document/searchqr?documentkey={{CUNE}}</CodigoQR>
 
 	<InformacionGeneral Version="V1.0: Documento Soporte de Pago de Nómina Electrónica"
 	                    Ambiente="{{ProfileExecutionID}}"
