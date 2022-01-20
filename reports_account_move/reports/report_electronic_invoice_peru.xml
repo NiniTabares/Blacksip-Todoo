@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            id="report_custom_electronic_invoice_peru"
+            string="Factura electrónica Perú"
+            model="account.move"
+            report_type="qweb-pdf"
+            name="reports_account_move.report_electronic_invoice_peru"
+        />
+
+        <template id="report_electronic_invoice_peru">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <style>
+                                p{
+                                    margin: 18px;
+                                }
+                                h1{
+                                    margin: 2px;
+                                }
+                                h3{
+                                    margin: 5px;
+                                }
+                                .header{
+                                    display: flex;
+                                    
+                                }
+                                .col-1{
+                                    width: 65%;
+                                    text-align: left;
+                                    
+                                }
+                                .col-2{
+                                    text-align: center;
+                                    border: black solid;
+                                    width: 35%;
+                                }
+                                .info{
+                                    display: flex;
+                                    border: black solid;
+                                }
+                                .info  p{
+                                    height: 25px;
+                                }
+                                .col-1-info{
+                                    
+                                    width: 25%;
+                                }
+                                .col-2-info{
+                                    font-weight: bolder;
+                                    font-size: 14px;
+                                    width: 40%; 
+                                }
+                                .col-3-info{
+                                    
+                                    width: 20%;
+                                    text-align: right;
+                                }
+                                .col-4-info{
+                                    
+                                    width: 15%;
+                                    text-align: left;
+                                }
+                                .description{
+                                    border: black solid;
+
+                                }
+                                table{
+                                    margin: auto;
+                                    width: 95%;
+                                    height: 80px;
+                                    text-align: center;
+                                }
+                                th{
+                                    border-bottom: black solid;
+                                }
+                                .mathdata {
+                                    display: flex;
+                                }
+                                .rows-mathdata{
+                                    width: 50%;
+                                    flex-direction: column; 
+                                    display: flex;
+                                    margin: auto;
+                                }
+                                .col-1-mathdata{
+                                    display: flex;  
+                                }
+                                .col-11-mathdata{
+                                    
+                                    width: 50%;
+                                    text-align: right;
+                                }
+                                .col-12-mathdata{
+                                    
+                                    width: 50%;
+                                }
+                                .col-12-mathdata p{
+                                    border: black solid 2px;
+                                }
+                                .col-1-row-2-mathdata{
+                                    display: flex;
+                                    font-weight: bold;
+                                }
+                                .col-11-row-2-mathdata{
+                                    
+                                    width: 15%;
+                                    text-align: right;
+                                }
+                                .col-12-row-2-mathdata{
+                                    
+                                    width: 85%;
+                                }
+                                .col-2-mathdata{
+                                    width: 48%;
+                                    border: black solid;
+                                    display: flex;
+                                }
+                                .col-21-mathdata{
+                                    width: 45%;
+                                    text-align: right;
+                                }
+                                .col-22-mathdata{
+                                    width: 55%;
+                                    text-align: right;
+                                }
+                                .col-21-mathdata p{
+                                    height: 22px;
+                                    margin: 2px;
+                                }
+                                .col-22-mathdata p{
+                                    border: black solid 2px;
+                                    margin: 3px;
+                                }
+                                .footer{
+                                    border: black solid 2px;
+                                    text-align: center;
+
+                                }
+                            </style>
+
+                            <section class="general">
+                                <div class="header">
+                                    <div class="col-1">
+                                        <H1>SOLUCIONES BLACK S.A.C.</H1>
+                                        <p>AV. 02 DE MAYO 516 OF 201</p>
+                                        <p>MIRAFLORES - LIMA - LIMA</p>
+                                    </div>
+                                    <div class="col-2">
+                                        <h3>FACTURA ELECTRONICA</h3>
+                                        <h3>RUC: 20604902640</h3>
+                                        <h3>E001-403</h3>
+                                    </div>
+                                </div>
+                                <hr style="border-color: black; width: 100%;">
+                                <div class="info">
+                                    <div class="col-1-info">
+                                        <p>Fecha de Emisión :</p>
+                                        <p>Señor(es) :</p>
+                                        <p>RUC :</p>
+                                        <p>Dirección del Cliente :</p>
+                                        <p>Tipo de Moneda :</p>
+                                        <p>Observación : </p>
+                                    </div>
+                                    <div class="col-2-info">
+                                        <p>07/12/2021</p>
+                                        <p>LUMINGO SOCIEDAD ANONIMA
+                                            CERRADA - LUMINGO S.A.C.</p>
+                                        <p>20608332074</p>
+                                        <p>JR. JORGE SALAZAR 171 LIMALIMA-LA VICTORIA</p>
+                                        <p>DOLAR AMERICANO</p>
+                                        <p>SERVICIO AFECTO A DETRACCION</p>
+                                    </div>
+                                    <div class="col-3-info">
+                                        <p>Forma de pago: </p>
+
+                                    </div>
+                                    <div class="col-4-info">
+                                        <p>Contado</p>
+                                    </div>
+                                    
+                                </div>
+                                <hr style="border-color: transparent; width: 100%; margin: 0px;">
+                                <div class="description">
+                                    <table>
+                                        <tr>
+                                            <th>Cantidad</th>
+                                            <th>Unidad Medida</th>
+                                            <th>Código</th>
+                                            <th>Descripción</th>
+                                            <th>Valor Unitario </th>
+                                            <th>ICBPER</th>
+                                        </tr>            
+                                        <tr>
+                                            <td>1.00</td>
+                                            <td>UNIDAD</td>
+                                            <td>SERVICIO</td>
+                                            <td>OPERACION MENSUAL LUMINGO - NOVIEMBRE 2021</td>
+                                            <td>157.50</td>
+                                            <td>0.00</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <hr style="border-color: transparent; width: 100%; margin: 2px;">
+                                <div class="mathdata">
+                                    <div class="rows-mathdata">
+                                        <div class="row-1-mathdata">
+                                            <div class="col-1-mathdata">
+                                                <div class="col-11-mathdata">
+                                                    <p>Valor de Venta de Operaciones Gratuitas :</p>
+                                                </div>
+                                                <div class="col-12-mathdata">
+                                                    <p>$0.00</p>
+                                                </div>
+                            
+                                            </div>
+                                        </div>
+                                        <div class="row-2-mathdata">
+                                            <div class="col-1-row-2-mathdata">
+                                                <div class="col-11-row-2-mathdata">
+                                                    <p>SON: </p>
+                                                </div>
+                                                <div class="col-12-row-2-mathdata">
+                                                    <p>CIENTO OCHENTA Y CINCO Y 85/100 DOLAR AMERICANO</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-2-mathdata">
+                                        <div class="col-21-mathdata">
+                                            <p>Sub Total Ventas :</p>
+                                            <p>Anticipos :</p>
+                                            <p>Descuentos :</p>
+                                            <p>Valor Venta : </p>
+                                            <p>ISC :</p>
+                                            <p>IGV :</p>
+                                            <p>ICBPER :</p>
+                                            <p>Otros Cargos :</p>
+                                            <p>Otros Tributos :</p>
+                                            <p>Monto de redondeo : </p>
+                                            <p>Importe Total :</p>
+                                        </div>
+                                        <div class="col-22-mathdata">
+                                            <p>$157.50</p>
+                                            <p>$0.00</p>
+                                            <p>$0.00</p>
+                                            <p>$157.50</p>
+                                            <p>$0.00</p>
+                                            <p>$28.35</p>
+                                            <p>$0.00</p>
+                                            <p>$0.00</p>
+                                            <p>$0.00</p>
+                                            <p>$0.00</p>
+                                            <p>$185.85</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr style="border-color: transparent; width: 100%; margin: 2px;">
+                                <div class="footer">
+                                    <h3>Esta es una representación impresa de la factura electrónica, generada en el Sistema de SUNAT. Puede verificarla utilizando su clave SOL.</h3>
+                                </div>
+                            </section>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
