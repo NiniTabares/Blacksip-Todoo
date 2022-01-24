@@ -12,259 +12,220 @@
         <template id="report_electronic_invoice_peru">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="o">
-                    <t t-call="web.external_layout">
-                        <div class="page">
-                            <style>
-                                p{
-                                    margin: 18px;
-                                }
-                                h1{
-                                    margin: 2px;
-                                }
-                                h3{
-                                    margin: 5px;
-                                }
-                                .header{
-                                    display: flex;
-                                    
-                                }
-                                .col-1{
-                                    width: 65%;
-                                    text-align: left;
-                                    
-                                }
-                                .col-2{
-                                    text-align: center;
-                                    border: black solid;
-                                    width: 35%;
-                                }
-                                .info{
-                                    display: flex;
-                                    border: black solid;
-                                }
-                                .info  p{
-                                    height: 25px;
-                                }
-                                .col-1-info{
-                                    
-                                    width: 25%;
-                                }
-                                .col-2-info{
-                                    font-weight: bolder;
-                                    font-size: 14px;
-                                    width: 40%; 
-                                }
-                                .col-3-info{
-                                    
-                                    width: 20%;
-                                    text-align: right;
-                                }
-                                .col-4-info{
-                                    
-                                    width: 15%;
-                                    text-align: left;
-                                }
-                                .description{
-                                    border: black solid;
-
-                                }
-                                table{
-                                    margin: auto;
-                                    width: 95%;
-                                    height: 80px;
-                                    text-align: center;
-                                }
-                                th{
-                                    border-bottom: black solid;
-                                }
-                                .mathdata {
-                                    display: flex;
-                                }
-                                .rows-mathdata{
-                                    width: 50%;
-                                    flex-direction: column; 
-                                    display: flex;
-                                    margin: auto;
-                                }
-                                .col-1-mathdata{
-                                    display: flex;  
-                                }
-                                .col-11-mathdata{
-                                    
-                                    width: 50%;
-                                    text-align: right;
-                                }
-                                .col-12-mathdata{
-                                    
-                                    width: 50%;
-                                }
-                                .col-12-mathdata p{
-                                    border: black solid 2px;
-                                }
-                                .col-1-row-2-mathdata{
-                                    display: flex;
-                                    font-weight: bold;
-                                }
-                                .col-11-row-2-mathdata{
-                                    
-                                    width: 15%;
-                                    text-align: right;
-                                }
-                                .col-12-row-2-mathdata{
-                                    
-                                    width: 85%;
-                                }
-                                .col-2-mathdata{
-                                    width: 48%;
-                                    border: black solid;
-                                    display: flex;
-                                }
-                                .col-21-mathdata{
-                                    width: 45%;
-                                    text-align: right;
-                                }
-                                .col-22-mathdata{
-                                    width: 55%;
-                                    text-align: right;
-                                }
-                                .col-21-mathdata p{
-                                    height: 22px;
-                                    margin: 2px;
-                                }
-                                .col-22-mathdata p{
-                                    border: black solid 2px;
-                                    margin: 3px;
-                                }
-                                .footer{
-                                    border: black solid 2px;
-                                    text-align: center;
-
-                                }
-                            </style>
-
-                            <section class="general">
-                                <div class="header">
-                                    <div class="col-1">
-                                        <H1>SOLUCIONES BLACK S.A.C.</H1>
-                                        <p>AV. 02 DE MAYO 516 OF 201</p>
-                                        <p>MIRAFLORES - LIMA - LIMA</p>
-                                    </div>
-                                    <div class="col-2">
-                                        <h3>FACTURA ELECTRONICA</h3>
-                                        <h3>RUC: 20604902640</h3>
-                                        <h3>E001-403</h3>
-                                    </div>
-                                </div>
-                                <hr style="border-color: black; width: 100%;">
-                                <div class="info">
-                                    <div class="col-1-info">
-                                        <p>Fecha de Emisión :</p>
-                                        <p>Señor(es) :</p>
-                                        <p>RUC :</p>
-                                        <p>Dirección del Cliente :</p>
-                                        <p>Tipo de Moneda :</p>
-                                        <p>Observación : </p>
-                                    </div>
-                                    <div class="col-2-info">
-                                        <p>07/12/2021</p>
-                                        <p>LUMINGO SOCIEDAD ANONIMA
-                                            CERRADA - LUMINGO S.A.C.</p>
-                                        <p>20608332074</p>
-                                        <p>JR. JORGE SALAZAR 171 LIMALIMA-LA VICTORIA</p>
-                                        <p>DOLAR AMERICANO</p>
-                                        <p>SERVICIO AFECTO A DETRACCION</p>
-                                    </div>
-                                    <div class="col-3-info">
-                                        <p>Forma de pago: </p>
-
-                                    </div>
-                                    <div class="col-4-info">
-                                        <p>Contado</p>
-                                    </div>
-                                    
-                                </div>
-                                <hr style="border-color: transparent; width: 100%; margin: 0px;">
-                                <div class="description">
-                                    <table>
-                                        <tr>
-                                            <th>Cantidad</th>
-                                            <th>Unidad Medida</th>
-                                            <th>Código</th>
-                                            <th>Descripción</th>
-                                            <th>Valor Unitario </th>
-                                            <th>ICBPER</th>
-                                        </tr>            
-                                        <tr>
-                                            <td>1.00</td>
-                                            <td>UNIDAD</td>
-                                            <td>SERVICIO</td>
-                                            <td>OPERACION MENSUAL LUMINGO - NOVIEMBRE 2021</td>
-                                            <td>157.50</td>
-                                            <td>0.00</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                                <hr style="border-color: transparent; width: 100%; margin: 2px;">
-                                <div class="mathdata">
-                                    <div class="rows-mathdata">
-                                        <div class="row-1-mathdata">
-                                            <div class="col-1-mathdata">
-                                                <div class="col-11-mathdata">
-                                                    <p>Valor de Venta de Operaciones Gratuitas :</p>
-                                                </div>
-                                                <div class="col-12-mathdata">
-                                                    <p>$0.00</p>
-                                                </div>
-                            
-                                            </div>
-                                        </div>
-                                        <div class="row-2-mathdata">
-                                            <div class="col-1-row-2-mathdata">
-                                                <div class="col-11-row-2-mathdata">
-                                                    <p>SON: </p>
-                                                </div>
-                                                <div class="col-12-row-2-mathdata">
-                                                    <p>CIENTO OCHENTA Y CINCO Y 85/100 DOLAR AMERICANO</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-2-mathdata">
-                                        <div class="col-21-mathdata">
-                                            <p>Sub Total Ventas :</p>
-                                            <p>Anticipos :</p>
-                                            <p>Descuentos :</p>
-                                            <p>Valor Venta : </p>
-                                            <p>ISC :</p>
-                                            <p>IGV :</p>
-                                            <p>ICBPER :</p>
-                                            <p>Otros Cargos :</p>
-                                            <p>Otros Tributos :</p>
-                                            <p>Monto de redondeo : </p>
-                                            <p>Importe Total :</p>
-                                        </div>
-                                        <div class="col-22-mathdata">
-                                            <p>$157.50</p>
-                                            <p>$0.00</p>
-                                            <p>$0.00</p>
-                                            <p>$157.50</p>
-                                            <p>$0.00</p>
-                                            <p>$28.35</p>
-                                            <p>$0.00</p>
-                                            <p>$0.00</p>
-                                            <p>$0.00</p>
-                                            <p>$0.00</p>
-                                            <p>$185.85</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr style="border-color: transparent; width: 100%; margin: 2px;">
-                                <div class="footer">
-                                    <h3>Esta es una representación impresa de la factura electrónica, generada en el Sistema de SUNAT. Puede verificarla utilizando su clave SOL.</h3>
-                                </div>
-                            </section>
+                    <div class="header" style="border: black solid; padding: 10px 20px;">
+                        <div class="row">
+                            <div class="col-1">
+                                <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" alt="Logo"/>
+                            </div>
+                            <div class="col-7" style="margin: 5px 0px 0px 30px;">
+                                <span><b>SOLUCIONES BLACK S.A.C.</b></span><br/>
+                                <span>AV. 02 DE MAYO 516 OF 201</span><br/>
+                                <span>MIRAFLORES - LIMA - LIMA</span>
+                            </div>
+                            <div class="col-4" style="text-align: center; border: black solid; justify-content: center; align-items: center; margin-left: -30px;">
+                                <span>FACTURA ELECTRONICA</span><br/>
+                                <span>RUC: 20604902640</span><br/>
+                                <span>E001-403</span>
+                            </div>
                         </div>
-                    </t>
+                    </div>
+                    <div class="article o_report_layout_standard" style="border: black solid;"> 
+                        <style>
+                            .description{
+                                border: black solid;
+                                
+                                margin: 0 auto;
+                                width: 98%;
+                            }
+                            table{
+                                margin: auto;
+                                font-size: 10px;
+                                height: 80px;
+                                width: 100%;
+                                text-align: center;
+                            }
+                            th{
+                                border-bottom: black solid;
+                            }
+                        </style>
+                        <div class="page">
+                            <div class="row" style="font-size: 12px; padding: 5px;">
+                                <div class="col-3" style="margin-left: 10px;">
+                                    <span>Fecha de Emisión:</span><br />
+                                    <span>Señor(es):</span><br />
+                                    <span>RUC :</span><br />
+                                    <span>Dirección del Cliente:</span><br />
+                                    <span>Tipo de Moneda:</span><br />
+                                    <span>Observación: </span>
+                                </div>
+                                <div class="col-7" style="margin-left: -60px;">
+                                    <span>07/12/2021</span><br />
+                                    <span>LUMINGO SOCIEDAD ANONIMA CERRADA - LUMINGO S.A.C.</span><br />
+                                    <span>20608332074</span><br />
+                                    <span>JR. JORGE SALAZAR 171 LIMALIMA-LA VICTORIA</span><br />
+                                    <span>DOLAR AMERICANO</span><br />
+                                    <span>SERVICIO AFECTO A DETRACCION</span>
+                                </div>
+                                <div class="col-3" style="margin-left: -20px;">
+                                    <span>Forma de pago: Contado </span>
+                                </div>
+                            </div>
+                            <div class="description">
+                                <table>
+                                    <tr>
+                                        <th>Cantidad</th>
+                                        <th>Unidad Medida</th>
+                                        <th>Código</th>
+                                        <th>Descripción</th>
+                                        <th>Valor Unitario </th>
+                                        <th>ICBPER</th>
+                                    </tr>            
+                                    <tr>
+                                        <td>1.00</td>
+                                        <td>UNIDAD</td>
+                                        <td>SERVICIO</td>
+                                        <td>OPERACION MENSUAL LUMINGO - NOVIEMBRE 2021</td>
+                                        <td>157.50</td>
+                                        <td>0.00</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <br/>
+                            
+                            <div class="container" style="font-size: 12px; width: 98%;">
+                                <div class="row" style="display: flex; align-items: center; justify-content: center;">
+                                    <div class="col-7">
+                                        <div class="row" style="padding-top: 25%;">
+                                            <div class="col-8">
+                                                <p>Valor de Venta de Operaciones Gratuitas :</p>
+                                            </div>
+                                            <div class="col-4">
+                                                <p style="border: black solid 2px;">$0.00</p>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="padding-top: 10%;">
+                                            <div class="col">
+                                                <p style="font-size: 14px;"><b>SON: CIENTO OCHENTA Y CINCO Y 85/100 DOLAR AMERICANO</b></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-5" style="border: black solid;">
+                                        <div class="row" style="margin-top: 5px;">
+                                            <div class="col-6" style="text-align: right">
+                                                <div class="row" style="margin-top: 5px;">
+                                                    <div class="col">
+                                                        <p>Sub Total Ventas :</p>
+                                                    </div>
+                                                    <div class="col">
+                                                        <p style="border: black solid 2px;">$157.50</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="row" style="margin-top: 5px;">
+                                                    <div class="col">
+                                                        <p>Anticipos :</p>
+                                                    </div>
+                                                    <div class="col">
+                                                        <p style="border: black solid 2px;">$0.00</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="row" style="margin-top: 5px;">
+                                                    <div class="col">
+                                                        <p>Descuentos :</p>
+                                                    </div>
+                                                    <div class="col">
+                                                        <p style="border: black solid 2px;">$0.00</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="row" style="margin-top: 5px;">
+                                                    <div class="col">
+                                                        <p>Valor Venta : </p>
+                                                    </div>
+                                                    <div class="col">
+                                                        <p style="border: black solid 2px;">$157.50</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="row" style="margin-top: 5px;">
+                                                    <div class="col">
+                                                        <p>ISC :</p>
+                                                    </div>
+                                                    <div class="col">
+                                                        <p style="border: black solid 2px;">$0.00</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="row" style="margin-top: 5px;">
+                                                    <div class="col">
+                                                        <p>IGV :</p>
+                                                    </div>
+                                                    <div class="col">
+                                                        <p style="border: black solid 2px;">$28.35</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="row" style="margin-top: 5px;">
+                                                    <div class="col">
+                                                        <p>ICBPER :</p>
+                                                    </div>
+                                                    <div class="col">
+                                                        <p style="border: black solid 2px;">$0.00</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="row" style="margin-top: 5px;">
+                                                    <div class="col">
+                                                        <p>Otros Cargos :</p>
+                                                    </div>
+                                                    <div class="col">
+                                                        <p style="border: black solid 2px;">$0.00</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="row" style="margin-top: 5px;">
+                                                    <div class="col">
+                                                        <p>Otros Tributos :</p>
+                                                    </div>
+                                                    <div class="col">
+                                                        <p style="border: black solid 2px;">$0.00</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="row" style="margin-top: 5px;">
+                                                    <div class="col">
+                                                        <p>Monto de redondeo : </p>
+                                                    </div>
+                                                    <div class="col">
+                                                        <p style="border: black solid 2px;">$0.00</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="row" style="margin-top: 5px;">
+                                                    <div class="col">
+                                                        <p>Importe Total :</p>
+                                                    </div>
+                                                    <div class="col">
+                                                        <p style="border: black solid 2px;">$185.85</p>
+                                                    </div>
+                                                </div>
+                                            <br/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="container" style="width: 98%; border: black solid;">
+                                <p style="text-align: center;">
+                                    Esta es una representación impresa de la factura electrónica, generada en el Sistema de SUNAT. Puede verificarla utilizando su clave SOL.
+                                </p>
+                            </div>
+                            <br/>
+                        </div>
+                    </div>
                 </t>
             </t>
         </template>
