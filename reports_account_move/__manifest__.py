@@ -1,7 +1,7 @@
 {
     'name': 'Reports account move',
 
-    'version': '13',
+    'version': '0.1',
 
     'author': "Todoo SAS",
 
