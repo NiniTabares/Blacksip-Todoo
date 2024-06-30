@@ -5,7 +5,7 @@
 {
     "name": "Colombian E-Payroll",
     "category": "Financial",
-    "version": "13.0.1.0.0",
+    "version": "0.1",
     "author": "Diego Carvajal Github@diegoivanc",
     "website": "https://www.dracosoft.com.co",
     "license": "AGPL-3",
