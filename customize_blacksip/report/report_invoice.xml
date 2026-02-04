@@ -74,66 +74,47 @@
                                 </div>
                             </t>
                         </div>
-                        <div class="mt-5">
+                        <div>
                             <div class="header">
-                                <br></br>
                                 <table style="width:100%; border: 1px solid white;">
                                     <tr style="width:100%;">
-                                        <td style="width:55%; text-align:center">
-                                            <table style="width:100%; margin-top:15px; border: 1px solid white;"
-                                                   add="small" name="employee-infos">
-                                                <tr style="height:10%; font-size:15px">
-                                                    <td>
-                                                        <span/>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <img width="190" height="140" t-if="company_id.logo"
-                                                             t-att-src="image_data_uri(company_id.logo)"
-                                                             alt="Logotipo de la empresa" class="float-left"/>
-                                                    </td>
-                                                </tr>
-                                            </table>
+                                        <td style="width:45%; display: flex; justify-content: center; align-items: center; height: 140px; ">
+                                            <!--img width="190" height="140" t-if="company.logo"
+                                                             t-att-src="image_data_uri(company.logo)"
+                                                             alt="Logotipo de la empresa" class="float-left"/-->
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <img t-if="company.logo" width="190" height="140" class="o_company_logo_small" t-att-src="image_data_uri(company.logo)" alt="Logo"/>
+                                            </div>
                                         </td>
-                                        <td style="width:45%;">
-                                            <table style="width:100%; margin-top:15px; border: 1px solid white;"
-                                                   add="small" name="employee-infos">
-                                                <tr style="height:10%; font-size:15px">
-                                                    <td t-if="company.is_company_details_empty">
-                                                        <span t-esc="o.env.company.name"/>
-                                                        <br/>
-                                                        <span t-esc="o.env.company.vat"/>
-                                                        <br/>
-                                                        <span t-esc="o.env.company.street"/>
-                                                        <span t-esc="o.env.company.street2"/>
-                                                        <span t-esc="o.env.company.city_id.name"/>
-                                                        -
-                                                        <span t-esc="o.env.company.state_id.name"/>
-                                                        -
-                                                        <span t-esc="o.env.company.country_id.name"/>
-                                                        <br/>
-                                                        <span t-esc="o.env.company.phone"/>
-                                                        <br/>
-                                                    </td>
-                                                    <tr style="height:10%; font-size:15px" t-else="">
-                                                        <td>
-                                                            <span t-field="company.company_details">
-                                                                <div>
-                                                                    <strong>Company details block</strong>
-                                                                    <div>Contains the company details.</div>
-                                                                </div>
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-
-                                                </tr>
-                                            </table>
+                                        <td t-if="company.is_company_details_empty" style="width:55%;">
+                                            <span t-esc="o.env.company.name"/>
+                                            <br/>
+                                            <span t-esc="o.env.company.vat"/>
+                                            <br/>
+                                            <span t-esc="o.env.company.street"/>
+                                            <span t-esc="o.env.company.street2"/>
+                                            <span t-esc="o.env.company.city_id.name"/>
+                                            -
+                                            <span t-esc="o.env.company.state_id.name"/>
+                                            -
+                                            <span t-esc="o.env.company.country_id.name"/>
+                                            <br/>
+                                            <span t-esc="o.env.company.phone"/>
+                                            <br/>
+                                        </td>
+                                        <td style="width:55%;" t-else="">
+                                            <span t-field="company.company_details" class="text-nowrap">
+                                                <div>
+                                                    <strong>Company details block</strong>
+                                                    <div>Contains the company details.</div>
+                                                </div>
+                                            </span>
                                         </td>
                                     </tr>
                                 </table>
                             </div>
                             <div class="page">
+                                <t t-set="dian_values" t-value="o._l10n_co_dian_get_extra_invoice_report_values()"/>
                                 <table style="width:100%; margin-top:15px; border 1px solid white;" add="small"
                                        name="partner-infos">
                                     <td style="width:45%;">
@@ -176,7 +157,7 @@
                                                     <strong>Departamento :</strong>
                                                 </td>
                                                 <td>
-                                                    <span t-field="o.delivery_address.state_id.name"/>
+                                                    <span t-field="o.partner_shipping_id.state_id.name"/>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -184,7 +165,7 @@
                                                     <strong>Ciudad</strong>
                                                 </td>
                                                 <td>
-                                                    <span t-field="o.delivery_address.city_id.name"/>
+                                                    <span t-field="o.partner_shipping_id.city_id.name"/>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -205,7 +186,7 @@
                                             </tr>
                                         </table>
                                     </td>
-                                    <t t-set="dian_values" t-value="o._l10n_co_dian_get_extra_invoice_report_values()"/>
+
                                     <td style="width:50%;">
                                         <table style="width:100%; margin-left:5px; font-size:13px; border:1px solid white;">
                                             <tr>
@@ -213,7 +194,7 @@
                                                     <strong>Facturación Electronica de Venta:</strong>
                                                 </td>
                                                 <td>
-                                                    <span t-esc="o.name"/>
+                                                    <span t-if="o.name and o.name != '/'" t-field="o.name"/>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -247,7 +228,7 @@
                                                           t-options='{"widget": "date","format": "dd/MM/yyyy"}'/>
                                                 </td>
                                             </tr>
-                                            <tr>
+                                            <tr t-if="o.invoice_payment_term_id">
                                                 <td>
                                                     <strong>Plazo (Días)</strong>
                                                 </td>
@@ -336,21 +317,21 @@
                                         <div class="column-50" style="width:55%; border:1px solid black">
                                             <div class="column-top">
                                                 <p style="padding-left:10px; font_size:12px;">Instrucciones:
-                                                    <!--span t-esc="o.env.company.payment_instructions"/>
+                                                    <span t-esc="o.env.company.payment_instructions"/>
                                                     <br></br>
                                                     <br></br>
                                                     Observaciones:
                                                     <span t-esc="o.comment"/>
-                                                    <br></br-->
+                                                    <br></br>
                                                 </p>
                                             </div>
                                             <div class="column-bottom">
                                                 <t t-if="o.l10n_co_edi_payment_option_id">
                                                     <p style="padding-left:10px; font-size:16px;">Forma de pago:
-                                                        Debito
+                                                        Contado
                                                         <br></br>
                                                         Medio de pago:
-                                                        <span t-esc="o.payment_method.name"/>
+                                                        <span t-esc="o.l10n_co_edi_payment_option_id.name"/>
                                                         <br></br>
                                                         <t t-if="o.currency_id.name == 'COP'">
                                                            valor:
@@ -364,7 +345,7 @@
                                                         Credito
                                                         <br></br>
                                                         Medio de pago:
-                                                        <span t-esc="o.payment_method.name"/>
+                                                        <span t-esc="o.l10n_co_edi_payment_option_id.name"/>
                                                         <br/>
                                                         <t t-if="o.currency_id.name == 'COP'">
                                                            valor:
@@ -376,89 +357,14 @@
                                             </div>
                                         </div>
                                         <div class="column-50" style="width:45%;">
-                                            <table style="width:90%; margin:auto;" add="small">
-                                                <tr class="border-black o_subtotal" style="padding-left:5px;">
-                                                    <td style="padding-left:5px;">
-                                                        <strong>Total Bruto</strong>
-                                                    </td>
-
-                                                    <td class="text-end" style="padding-right:5px">
-                                                        <span t-esc="o.amount_untaxed"
-                                                              t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
-                                                    </td>
-                                                </tr>
-
-                                                <!--Impuestos totales-->
-                                                <t t-set="tax_totals" t-value="o.tax_totals"/>
-                                                <t t-foreach="tax_totals['subtotals']" t-as="subtotal">
-                                                    <t t-set="subtotal_to_show" t-value="subtotal['name']"/>
-                                                    <!-- Grupo de Impuestos -->
-                                                    <t t-foreach="tax_totals['groups_by_subtotal'][subtotal_to_show]"
-                                                       t-as="amount_by_group">
-                                                        <tr>
-                                                            <t t-if="tax_totals['display_tax_base']">
-                                                                <td style="padding-left:5px;">
-                                                                    <t t-if="amount_by_group['tax_group_name'] == 'Taxes'">
-                                                                        <span>Impuestos</span>
-                                                                    </t>
-                                                                    <t t-else="">
-                                                                        <span t-esc="amount_by_group['tax_group_name']"/>
-                                                                    </t>
-                                                                </td>
-                                                                <td class="text-end o_price_total"
-                                                                    style="padding-right:5px;">
-                                                                    <span class="text-nowrap"
-                                                                          t-esc="amount_by_group['formatted_tax_group_amount']"/>
-                                                                </td>
-                                                            </t>
-                                                            <t t-else="">
-                                                                <td style="padding-left:5px;">
-                                                                    <t t-if="amount_by_group['tax_group_name'] == 'Taxes'">
-                                                                        <span class="text-nowrap">Impuestos
-                                                                        </span>
-                                                                    </t>
-                                                                    <t t-else="">
-                                                                        <span class="text-nowrap"
-                                                                              t-esc="amount_by_group['tax_group_name']"/>
-                                                                    </t>
-                                                                </td>
-                                                                <td class="text-end o_price_total"
-                                                                    style="padding-right:5px;">
-                                                                    <span class="text-nowrap"
-                                                                          t-esc="amount_by_group['formatted_tax_group_amount']"/>
-                                                                </td>
-                                                            </t>
-                                                        </tr>
-                                                    </t>
-
-                                                </t>
-
-                                                <t t-if="'formatted_rounding_amount' in tax_totals and tax_totals['rounding_amount'] != 0">
-                                                    <td style="padding-left:5px;">Redondeo</td>
-                                                    <td class="text-end" style="padding-right:5px;">
-                                                        <span t-esc="tax_totals['formatted_rounding_amount']"/>
-                                                    </td>
-                                                </t>
-
-                                                <!--Total amount with all taxes-->
-                                                <tr class="border-black o_total">
-                                                    <td style="padding-left:5px;">
-                                                        <strong>Total a Pagar</strong>
-                                                    </td>
-                                                    <td class="text-end" style="padding-right:5px;">
-                                                        <span t-esc="tax_totals['formatted_amount_total_rounded']"
-                                                              t-if="'formatted_amount_total_rounded' in tax_totals"/>
-                                                        <span t-esc="tax_totals['formatted_amount_total']"
-                                                              t-else=""/>
-                                                    </td>
-                                                </tr>
-                                            </table>
+                                            <t t-set="tax_totals" t-value="o.tax_totals"/>
+                                            <t t-call="account.document_tax_totals_company_currency_template"/>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="footer">
-                                <t t-if="o.send_registry.cufe">
+                                <t t-if="dian_values.get('identifier')">
                                     <div id="cufe" name="cufe">
                                         <table class="table" style="width:100%">
                                             <tr>
@@ -474,11 +380,7 @@
                                                               t-options='{"widget": "date","format": "dd/MM/yyyy"}'/>
                                                         Habilita numeración de:
                                                         <span t-esc="o.journal_id.code + str(o.journal_id.l10n_co_edi_min_range_number)"/>
-                                                        -
-                                                        <span t-esc="o.journal_id.code + str(o.journal_id.l10n_co_edi_min_range_number)"/>
                                                         al
-                                                        <span t-esc="o.journal_id.code + str(o.journal_id.l10n_co_edi_min_range_number)"/>
-                                                        -
                                                         <span t-esc="o.journal_id.code + str(o.journal_id.l10n_co_edi_max_range_number)"/>
                                                         <br/>
                                                         Este documento corresponde a la representación gráfica
@@ -489,21 +391,21 @@
                                                         bidimensional:
                                                         <br/>
                                                         CUFE:
-                                                        <span t-field="dian_values.get('identifier')"/>
+                                                        <span t-esc="dian_values.get('identifier')"/>
                                                         <br/>
                                                         <span class="text-left" style="font-size: 8.5pt;">
-                                                            Proveedor
-                                                            tecnológico: Comercio Electrónico en Internet CENET
-                                                            S.A. NIT
-                                                            830057860 Software: misfacturas
+                                                            Generado por: Software Propio
+                                                            <br />
+                                                            NIT: <span t-out="o.company_id.vat">1018418009</span>
                                                         </span>
                                                     </p>
                                                 </td>
                                                 <td style="width:20%">
-                                                    <img t-if="dian_values.get('barcode_src')" t-attf-src="dian_values.get('barcode_src')"
+                                                    <img alt="Barcode" t-att-src="dian_values.get('barcode_src')"/>
+                                                    <!--img t-if="dian_values.get('barcode_src')" t-attf-src="dian_values.get('barcode_src')"
                                                          t-field-options="{&quot;class&quot;: &quot;oe_avatar&quot;}"
                                                          class="img-fluid"
-                                                         style="max-height:100pt;max-width:100pt"/>
+                                                         style="max-height:100pt;max-width:100pt"/-->
                                                 </td>
                                             </tr>
                                         </table>
@@ -584,8 +486,8 @@
                                 <div class="container">
                                     <div class="row justify-content-md-center">
                                         <div class="col-5">
-                                            <img width="230" height="160" t-if="o.company_id.logo"
-                                                             t-att-src="image_data_uri(o.company_id.logo)"
+                                            <img width="230" height="160" t-if="company.logo"
+                                                             t-att-src="image_data_uri(company.logo)"
                                                              alt="Logotipo de la empresa"/>
                                         </div>
                                         <div class="col-7" t-if="company.is_company_details_empty">
@@ -623,7 +525,7 @@
                                             Nota Credito de Venta:
                                         </div>
                                         <div class="col-8">
-                                            <span t-field="o.name"/>
+                                            <span t-if="o.name and o.name != '/'" t-field="o.name"/>
                                         </div>
                                     </div>
                                     <div class="row align-items-start">
@@ -721,7 +623,7 @@
                                             Departamento:
                                         </div>
                                         <div class="col-8">
-                                            <span t-field="o.delivery_address.state_id.name"/>
+                                            <span t-field="o.partner_shipping_id.state_id.name"/>
                                         </div>
                                     </div>
                                     <div class="row align-items-start">
@@ -729,7 +631,7 @@
                                             Ciudad:
                                         </div>
                                         <div class="col-8">
-                                            <span t-field="o.delivery_address.city_id.name"/>
+                                            <span t-field="o.partner_shipping_id.city_id.name"/>
                                         </div>
                                     </div>
                                     <div class="row align-items-start">
@@ -838,7 +740,10 @@
                                             </div>
                                         </div>
                                         <div class="column-50" style="width:45%;">
-                                            <p style="width:90%; padding-left:10px; margin:auto; height:30px; border:1px solid black;">
+                                            <t t-set="tax_totals" t-value="o.tax_totals"/>
+                                            <t t-call="account.document_tax_totals_company_currency_template"/>
+
+                                            <!--p style="width:90%; padding-left:10px; margin:auto; height:30px; border:1px solid black;">
                                                 <b>Subtotal:</b>
                                                 <span t-esc="o.currency_id.name"/>
                                                 <span t-esc="o.amount_untaxed_signed * -1"
@@ -870,7 +775,6 @@
                                                     <t t-call="account.tax_groups_totals"/>
                                                 </t>
 
-                                                <!--Total amount with all taxes-->
                                                 <tr class="border-black o_total">
                                                     <td>
                                                         <strong>Total</strong>
@@ -880,7 +784,7 @@
                                                     </td>
                                                 </tr>
 
-                                            </table>
+                                            </table-->
                                         </div>
                                     </div>
                                 </div>
