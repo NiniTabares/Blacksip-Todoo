@@ -321,7 +321,7 @@
                                                     <br></br>
                                                     <br></br>
                                                     Observaciones:
-                                                    <span t-esc="o.comment"/>
+                                                    <span t-esc="o.narration"/>
                                                     <br></br>
                                                 </p>
                                             </div>
