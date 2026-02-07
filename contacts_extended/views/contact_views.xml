@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+	<!-- oe_stat_button -->
+	<record id="contacts_view_tree" model="ir.ui.view">
+		<field name="name">contacts.view.tree</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="base.view_partner_tree"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='complete_name']" position="after">
+				<field name="street" />
+			</xpath>
+		</field>
+	</record>
+</odoo>

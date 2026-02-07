@@ -1,0 +1,850 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_invoices_intello">
+            <t t-call="web.html_container">
+                <t t-set="o" t-value="o.with_context(lang=lang)"/>
+                <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-elif="o and 'company_id' in o and o.company_id.sudo()">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+                <t t-if="o.move_type == 'out_invoice'">
+                    <t t-call="web.basic_layout">
+                        <t t-set="forced_vat"
+                           t-value="o.fiscal_position_id.foreign_vat"/> <!-- So that it appears in the footer of the report instead of the company VAT if it's set -->
+                        <div class="row">
+                            <t t-if="o.partner_shipping_id and (o.partner_shipping_id != o.partner_id)">
+                                <div class="col-6">
+                                    <t t-set="information_block">
+                                        <div groups="account.group_delivery_invoice_address"
+                                             name="shipping_address_block">
+                                            <strong>Shipping Address:</strong>
+                                            <div t-field="o.partner_shipping_id"
+                                                 t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                                        </div>
+                                    </t>
+                                </div>
+                                <div class="col-6" name="address_not_same_as_shipping">
+                                    <t t-set="address">
+                                        <address class="mb-0" t-field="o.partner_id"
+                                                 t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                                        <div t-if="o.partner_id.vat" id="partner_vat_address_not_same_as_shipping">
+                                            <t t-if="o.company_id.account_fiscal_country_id.vat_label"
+                                               t-esc="o.company_id.account_fiscal_country_id.vat_label"
+                                               id="inv_tax_id_label"/>
+                                            <t t-else="">Tax ID</t>:
+                                            <span t-field="o.partner_id.vat"/>
+                                        </div>
+                                    </t>
+                                </div>
+                            </t>
+                            <t t-elif="o.partner_shipping_id and (o.partner_shipping_id == o.partner_id)">
+                                <div class="offset-col-6 col-6" name="address_same_as_shipping">
+                                    <t t-set="address">
+                                        <address class="mb-0" t-field="o.partner_id"
+                                                 t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                                        <div t-if="o.partner_id.vat" id="partner_vat_address_same_as_shipping">
+                                            <t t-if="o.company_id.account_fiscal_country_id.vat_label"
+                                               t-esc="o.company_id.account_fiscal_country_id.vat_label"
+                                               id="inv_tax_id_label"/>
+                                            <t t-else="">Tax ID</t>:
+                                            <span t-field="o.partner_id.vat"/>
+                                        </div>
+                                    </t>
+                                </div>
+                            </t>
+                            <t t-else="">
+                                <div class="offset-col-6 col-6" name="no_shipping">
+                                    <t t-set="address">
+                                        <address class="mb-0" t-field="o.partner_id"
+                                                 t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                                        <div t-if="o.partner_id.vat" id="partner_vat_no_shipping">
+                                            <t t-if="o.company_id.account_fiscal_country_id.vat_label"
+                                               t-esc="o.company_id.account_fiscal_country_id.vat_label"
+                                               id="inv_tax_id_label"/>
+                                            <t t-else="">Tax ID</t>:
+                                            <span t-field="o.partner_id.vat"/>
+                                        </div>
+                                    </t>
+                                </div>
+                            </t>
+                        </div>
+                        <div>
+                            <div class="header">
+                                <table style="width:100%; border: 1px solid white;">
+                                    <tr style="width:100%;">
+                                        <td style="width:45%; display: flex; justify-content: center; align-items: center; height: 140px; ">
+                                            <!--img width="190" height="140" t-if="company.logo"
+                                                             t-att-src="image_data_uri(company.logo)"
+                                                             alt="Logotipo de la empresa" class="float-left"/-->
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <img t-if="company.logo" width="190" height="140" class="o_company_logo_small" t-att-src="image_data_uri(company.logo)" alt="Logo"/>
+                                            </div>
+                                        </td>
+                                        <td t-if="company.is_company_details_empty" style="width:55%;">
+                                            <span t-esc="o.env.company.name"/>
+                                            <br/>
+                                            <span t-esc="o.env.company.vat"/>
+                                            <br/>
+                                            <span t-esc="o.env.company.street"/>
+                                            <span t-esc="o.env.company.street2"/>
+                                            <span t-esc="o.env.company.city_id.name"/>
+                                            -
+                                            <span t-esc="o.env.company.state_id.name"/>
+                                            -
+                                            <span t-esc="o.env.company.country_id.name"/>
+                                            <br/>
+                                            <span t-esc="o.env.company.phone"/>
+                                            <br/>
+                                        </td>
+                                        <td style="width:55%;" t-else="">
+                                            <span t-field="company.company_details" class="text-nowrap">
+                                                <div>
+                                                    <strong>Company details block</strong>
+                                                    <div>Contains the company details.</div>
+                                                </div>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="page">
+                                <t t-set="dian_values" t-value="o._l10n_co_dian_get_extra_invoice_report_values()"/>
+                                <table style="width:100%; margin-top:15px; border 1px solid white;" add="small"
+                                       name="partner-infos">
+                                    <td style="width:45%;">
+                                        <table style="width:100%; margin-left:5px; font-size:13px; border:1px solid white;">
+                                            <tr style="height:150%;">
+                                                <td>
+                                                    <strong>Cliente:</strong>
+                                                </td>
+                                                <td style="white-space:normal; padding-right:8px">
+                                                    <span t-field="o.partner_id.name"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>Número de Identificación</strong>
+                                                </td>
+                                                <td>
+                                                    <span t-field="o.partner_id.l10n_latam_identification_type_id.name"/>
+                                                    <span t-field="o.partner_id.vat"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>Dirección :</strong>
+                                                </td>
+                                                <td>
+                                                    <span t-field="o.partner_id.street"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>Teléfono :</strong>
+                                                </td>
+                                                <td colspan="3">
+                                                    <span t-field="o.partner_id.phone"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>Departamento :</strong>
+                                                </td>
+                                                <td>
+                                                    <span t-field="o.partner_shipping_id.state_id.name"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>Ciudad</strong>
+                                                </td>
+                                                <td>
+                                                    <span t-field="o.partner_shipping_id.city_id.name"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>País :</strong>
+                                                </td>
+                                                <td>
+                                                    <span t-field="o.partner_id.country_id.name"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>Centro de costos :</strong>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="o.cost_center.name"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+
+                                    <td style="width:50%;">
+                                        <table style="width:100%; margin-left:5px; font-size:13px; border:1px solid white;">
+                                            <tr>
+                                                <td style="width:47%">
+                                                    <strong>Facturación Electronica de Venta:</strong>
+                                                </td>
+                                                <td>
+                                                    <span t-if="o.name and o.name != '/'" t-field="o.name"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>Fecha de emisión:</strong>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="o.invoice_date"
+                                                          t-options='{"widget": "date","format": "dd/MM/yyyy"}'/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>Fecha de validación DIAN</strong>
+                                                </td>
+                                                <td>
+                                                    <t t-if="dian_values.get('signing_datetime')">
+                                                        <span t-esc="dian_values.get('signing_datetime').strftime('%d/%m/%Y %H:%M')"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <span></span>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>Fecha de Vencimiento</strong>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="o.invoice_date_due"
+                                                          t-options='{"widget": "date","format": "dd/MM/yyyy"}'/>
+                                                </td>
+                                            </tr>
+                                            <tr t-if="o.invoice_payment_term_id">
+                                                <td>
+                                                    <strong>Plazo (Días)</strong>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="o.invoice_payment_term_id.name"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>Código de Moneda</strong>
+                                                </td>
+                                                <td>
+                                                    <span t-field="o.currency_id.name"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>Tasa de Cambio</strong>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="o.trm"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>Orden</strong>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="o.ref"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>Comercial:</strong>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="o.commercial.name"/>
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </td>
+                                </table>
+                                <br/>
+                                <br/>
+                                <table style="width:100%" class="table table-bordered border-dark" add="small">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:10%">Referencia</th>
+                                            <th style="width:50%">Descripcion</th>
+                                            <th style="width:10%">Cant</th>
+                                            <th style="width:15%">Precio Unitario</th>
+                                            <th style="width:15%">Valor Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="height:10%; font-size:15px">
+                                        <tr class="text-right"
+                                            t-foreach="o.invoice_line_ids"
+                                            t-as="line_ids">
+                                            <td class="text-left">
+                                                <span t-field="line_ids.product_id.default_code"/>
+                                            </td>
+                                            <td class="text-left">
+                                                <span t-esc="line_ids.name"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="line_ids.quantity"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="line_ids.price_unit"
+                                                      t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="line_ids.price_subtotal"
+                                                      t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <br/>
+                                <br/>
+                                <!--Caja de subtotal -->
+                                <div class="container_100" style="width:100%; page-break-inside: avoid;">
+                                    <div class="d-flex flex-row bd-highlight mb-3" style="width:100%;">
+                                        <div class="column-50" style="width:55%; border:1px solid black">
+                                            <div class="column-top">
+                                                <p style="padding-left:10px; font_size:12px;">Instrucciones:
+                                                    <span t-esc="o.env.company.payment_instructions"/>
+                                                    <br></br>
+                                                    <br></br>
+                                                    Observaciones:
+                                                    <span t-esc="o.narration"/>
+                                                    <br></br>
+                                                </p>
+                                            </div>
+                                            <div class="column-bottom">
+                                                <t t-if="o.l10n_co_edi_is_direct_payment">
+                                                    <p style="padding-left:10px; font-size:16px;">Forma de pago:
+                                                        Contado
+                                                        <br></br>
+                                                        Medio de pago:
+                                                        <span t-esc="o.l10n_co_edi_payment_option_id.name"/>
+                                                        <br></br>
+                                                        <t t-if="o.currency_id.name == 'COP'">
+                                                           valor:
+                                                           <span t-esc="o.currency_id.amount_to_text(o.amount_total)"/>
+                                                       </t>
+                                                        M/Cte
+                                                    </p>
+                                                </t>
+                                                <t t-if="o.l10n_co_edi_payment_option_id.code in ('1', '2')">
+                                                    <p t-if="not o.l10n_co_edi_is_direct_payment" style="padding-left:10px; font-size:16px;">Forma de pago:
+                                                        Credito
+                                                        <br></br>
+                                                        Medio de pago:
+                                                        <span t-esc="o.l10n_co_edi_payment_option_id.name"/>
+                                                        <br/>
+                                                        <t t-if="o.currency_id.name == 'COP'">
+                                                           valor:
+                                                           <span t-esc="o.currency_id.amount_to_text(o.amount_total)"/>
+                                                       </t>
+                                                        M/Cte
+                                                    </p>
+                                                </t>
+                                            </div>
+                                        </div>
+                                        <div class="column-50" style="width:45%;">
+                                            <t t-set="tax_totals" t-value="o.tax_totals"/>
+                                            <t t-call="account.document_tax_totals_company_currency_template"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="footer">
+                                <t t-if="dian_values.get('identifier')">
+                                    <div id="cufe" name="cufe">
+                                        <table class="table" style="width:100%">
+                                            <tr>
+                                                <td style="width:80%">
+                                                    <p style="font-size: 8.5pt;">
+                                                        Autorización de numeración de facturación electrónica
+                                                        <span t-esc="o.journal_id.l10n_co_edi_dian_authorization_number"/>
+                                                        del
+                                                        <span t-esc="o.journal_id.l10n_co_edi_dian_authorization_date"
+                                                              t-options='{"widget": "date","format": "dd/MM/yyyy"}'/>
+                                                        al
+                                                        <span t-esc="o.journal_id.l10n_co_edi_dian_authorization_end_date"
+                                                              t-options='{"widget": "date","format": "dd/MM/yyyy"}'/>
+                                                        Habilita numeración de:
+                                                        <span t-esc="o.journal_id.code + str(o.journal_id.l10n_co_edi_min_range_number)"/>
+                                                        al
+                                                        <span t-esc="o.journal_id.code + str(o.journal_id.l10n_co_edi_max_range_number)"/>
+                                                        <br/>
+                                                        Este documento corresponde a la representación gráfica
+                                                        de una
+                                                        factura electrónica.
+                                                        <br/>
+                                                        Confirme el CUFE mediante lectura de este código
+                                                        bidimensional:
+                                                        <br/>
+                                                        CUFE:
+                                                        <span t-esc="dian_values.get('identifier')"/>
+                                                        <br/>
+                                                        <span class="text-left" style="font-size: 8.5pt;">
+                                                            Generado por: Software Propio
+                                                            <br />
+                                                            NIT: <span t-out="o.company_id.vat">1018418009</span>
+                                                        </span>
+                                                    </p>
+                                                </td>
+                                                <td style="width:20%">
+                                                    <img alt="Barcode" t-att-src="dian_values.get('barcode_src')" style="max-height:80pt;max-width:80pt"/>
+                                                    <!--img t-if="dian_values.get('barcode_src')" t-attf-src="dian_values.get('barcode_src')"
+                                                         t-field-options="{&quot;class&quot;: &quot;oe_avatar&quot;}"
+                                                         class="img-fluid"
+                                                         style="max-height:100pt;max-width:100pt"/-->
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                </t>
+                            </div>
+
+                        </div>
+                    </t>
+                </t>
+
+                <t t-elif="o.move_type == 'out_refund'">
+                    <t t-call="web.basic_layout">
+                        <t t-set="o" t-value="o.with_context(lang=lang)"/>
+                        <t t-set="forced_vat"
+                           t-value="o.fiscal_position_id.foreign_vat"/> <!-- So that it appears in the footer of the report instead of the company VAT if it's set -->
+                        <div class="row">
+                            <t t-if="o.partner_shipping_id and (o.partner_shipping_id != o.partner_id)">
+                                <div class="col-6">
+                                    <t t-set="information_block">
+                                        <div groups="account.group_delivery_invoice_address"
+                                             name="shipping_address_block">
+                                            <strong>Shipping Address:</strong>
+                                            <div t-field="o.partner_shipping_id"
+                                                 t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                                        </div>
+                                    </t>
+                                </div>
+                                <div class="col-6" name="address_not_same_as_shipping">
+                                    <t t-set="address">
+                                        <address class="mb-0" t-field="o.partner_id"
+                                                 t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                                        <div t-if="o.partner_id.vat" id="partner_vat_address_not_same_as_shipping">
+                                            <t t-if="o.company_id.account_fiscal_country_id.vat_label"
+                                               t-esc="o.company_id.account_fiscal_country_id.vat_label"
+                                               id="inv_tax_id_label"/>
+                                            <t t-else="">Tax ID</t>:
+                                            <span t-field="o.partner_id.vat"/>
+                                        </div>
+                                    </t>
+                                </div>
+                            </t>
+                            <t t-elif="o.partner_shipping_id and (o.partner_shipping_id == o.partner_id)">
+                                <div class="offset-col-6 col-6" name="address_same_as_shipping">
+                                    <t t-set="address">
+                                        <address class="mb-0" t-field="o.partner_id"
+                                                 t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                                        <div t-if="o.partner_id.vat" id="partner_vat_address_same_as_shipping">
+                                            <t t-if="o.company_id.account_fiscal_country_id.vat_label"
+                                               t-esc="o.company_id.account_fiscal_country_id.vat_label"
+                                               id="inv_tax_id_label"/>
+                                            <t t-else="">Tax ID</t>:
+                                            <span t-field="o.partner_id.vat"/>
+                                        </div>
+                                    </t>
+                                </div>
+                            </t>
+                            <t t-else="">
+                                <div class="offset-col-6 col-6" name="no_shipping">
+                                    <t t-set="address">
+                                        <address class="mb-0" t-field="o.partner_id"
+                                                 t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                                        <div t-if="o.partner_id.vat" id="partner_vat_no_shipping">
+                                            <t t-if="o.company_id.account_fiscal_country_id.vat_label"
+                                               t-esc="o.company_id.account_fiscal_country_id.vat_label"
+                                               id="inv_tax_id_label"/>
+                                            <t t-else="">Tax ID</t>:
+                                            <span t-field="o.partner_id.vat"/>
+                                        </div>
+                                    </t>
+                                </div>
+                            </t>
+                        </div>
+                        <div class="mt-5">
+                            <div class="header">
+                                <div class="container">
+                                    <div class="row justify-content-md-center">
+                                        <div class="col-5">
+                                            <img width="230" height="160" t-if="company.logo"
+                                                             t-att-src="image_data_uri(company.logo)"
+                                                             alt="Logotipo de la empresa"/>
+                                        </div>
+                                        <div class="col-7" t-if="company.is_company_details_empty">
+                                            <p><br/>
+                                                <span t-esc="o.env.company.name"/><br/>
+                                                <span t-esc="o.env.company.vat"/><br/>
+                                                <span>99-PN No Aplica - Otros</span><br/>
+                                                <span t-esc="o.env.company.street_01.name"/>
+                                                <span t-esc="o.env.company.street_02"/>
+                                                No <span t-esc="o.env.company.street_06"/>
+                                                <span t-esc="o.env.company.street_07.name"/> -
+                                                <span t-esc="o.env.company.street_09"/>
+                                                <span t-esc="o.env.company.city_id.name"/> -
+                                                <span t-esc="o.env.company.country_id.name"/><br/>
+                                                <span t-esc="o.env.company.phone"/><br/>
+                                                <span t-esc="o.env.company.email"/></p>
+                                        </div>
+                                        <div class="col-7" t-else="">
+                                            <span t-field="company.company_details">
+                                                <div>
+                                                    <strong>Company details block</strong>
+                                                    <div>Contains the company details.</div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="page">
+                                <t t-set="dian_values" t-value="o._l10n_co_dian_get_extra_invoice_report_values()"/>
+                                <!-- caja datos de factura -->
+                                <div class="container" style="border:1px solid black;">
+                                    <div class="row align-items-start">
+                                        <div class="col-4">
+                                            Nota Credito de Venta:
+                                        </div>
+                                        <div class="col-8">
+                                            <span t-if="o.name and o.name != '/'" t-field="o.name"/>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-start">
+                                        <div class="col-4">
+                                            Fecha de emisión:
+                                        </div>
+                                        <div class="col-8">
+                                            <span t-esc="o.invoice_date"
+                                                  t-options='{"widget": "date","format": "dd/MM/yyyy"}'/>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-start">
+                                        <div class="col-4">
+                                            Concepto:
+                                        </div>
+                                        <div class="col-8">
+                                            <t t-if="o.reversed_entry_id">
+                                                <span>Anulación de factura electrónica</span>
+                                            </t>
+                                            <t t-else=" ">
+                                                <span>Devolución parcial de los bienes y/o no aceptación parcial del
+                                                    servicio
+                                                </span>
+                                            </t>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-start">
+                                        <div class="col-4">
+                                            Facturas asociadas:
+                                        </div>
+                                        <div class="col-8">
+                                            <t t-if="o.reversed_entry_id">
+                                                <span t-esc="o.reversed_entry_id.name"/>
+                                            </t>
+                                            <t t-else=" ">
+                                                <span></span>
+                                            </t>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-start">
+                                        <div class="col-4">
+                                            Código Único de Documento Electrónico CUDE:
+                                        </div>
+                                        <div class="col-8">
+                                            <span t-field="o.l10n_co_edi_cufe_cude_ref"/>
+                                            <br/>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                    <div class="row align-items-start">
+                                        <div class="col-4">
+                                            Código Único de Factura Electrónica CUFE:
+                                        </div>
+                                        <div class="col-8">
+                                            <t t-if="o.reversed_entry_id">
+                                                <span t-field="dian_values.get('identifier')"/>
+                                            </t>
+                                            <t t-else=" ">
+                                                <span></span>
+                                            </t>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                </div>
+                                <br/>
+                                <!-- caja datos del cliente -->
+                                <div class="container" style="border:1px solid black;">
+                                    <div class="row align-items-start">
+                                        <div class="col-4">
+                                            Cliente:
+                                        </div>
+                                        <div class="col-8">
+                                            <span t-field="o.partner_id.name"/>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-start">
+                                        <div class="col-4">
+                                            Número de Identificación :
+                                        </div>
+                                        <div class="col-8">
+                                            <span t-field="o.partner_id.l10n_latam_identification_type_id.name"/>
+                                            <span t-field="o.partner_id.vat"/>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-start">
+                                        <div class="col-4">
+                                            Dirección:
+                                        </div>
+                                        <div class="col-8">
+                                            <span t-field="o.partner_id.street"/>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-start">
+                                        <div class="col-4">
+                                            Departamento:
+                                        </div>
+                                        <div class="col-8">
+                                            <span t-field="o.partner_shipping_id.state_id.name"/>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-start">
+                                        <div class="col-4">
+                                            Ciudad:
+                                        </div>
+                                        <div class="col-8">
+                                            <span t-field="o.partner_shipping_id.city_id.name"/>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-start">
+                                        <div class="col-4">
+                                            País:
+                                        </div>
+                                        <div class="col-8">
+                                            <span t-field="o.partner_id.country_id.name"/>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-start">
+                                        <div class="col-4">
+                                            Teléfono:
+                                        </div>
+                                        <div class="col-8">
+                                            <span t-field="o.partner_id.phone"/>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-start">
+                                        <div class="col-4">
+                                            Correo electrónico :
+                                        </div>
+                                        <div class="col-8">
+                                            <span t-field="o.partner_id.email"/>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <br/>
+                                <!-- caja mostrar los productos -->
+                                <t t-set="item" t-value="1"/>
+                                <table class="table table-bordered" style="width:100%;" add="small">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:10%">Item</th>
+                                            <th style="width:10%">Referencia</th>
+                                            <th style="width:25%">Descripción</th>
+                                            <th style="width:4%">Cant</th>
+                                            <th style="width:4%">Unidad</th>
+                                            <th style="width:15%">Precio Unitario</th>
+                                            <th style="width:4%">Descuentos</th>
+                                            <th style="width:20%">Impuestos</th>
+                                            <th style="width:18%">Valor Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="font-size:14px">
+                                        <tr class="text-right"
+                                            t-foreach="o.invoice_line_ids"
+                                            t-as="line_ids">
+
+                                            <td class="text-left">
+                                                <span t-esc="item"/>
+                                            </td>
+                                            <td class="text-left">
+                                                <span t-esc="line_ids.product_id.default_code"/>
+                                            </td>
+                                            <td class="text-left">
+                                                <span t-esc="line_ids.name"/>
+                                            </td>
+                                            <td class="text-left">
+                                                <span t-esc="line_ids.quantity"/>
+                                            </td>
+                                            <td class="text-left">
+                                                <span t-esc="line_ids.product_uom_id.name"/>
+                                            </td>
+                                            <td class="text-left">
+                                                <span t-field="line_ids.price_unit"
+                                                      t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                            </td>
+                                            <td class="text-left">
+                                                <span t-esc="o.total_discount_amount"
+                                                      t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                            </td>
+                                            <td class="text-left">
+                                                <t t-foreach="line_ids.tax_ids" t-as="tax_ids">
+                                                    <t t-if="tax_ids.tax_type.code != 'NA'">
+                                                        [<span t-esc="tax_ids.name"/>]
+                                                    </t>
+                                                </t>
+                                            </td>
+                                            <td class="text-left">
+                                                <span t-esc="line_ids.price_subtotal"
+                                                      t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                            </td>
+                                            <t t-set="item" t-value="item+1"/>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr style="height:5px;"></tr>
+                                    </tfoot>
+                                </table>
+                                <br/>
+                                <!-- caja mostra impuestos y totales -->
+                                <div class="container_100" style="width:100%; page-break-inside: avoid;">
+                                    <div class="d-flex flex-row bd-highlight mb-3" style="width:100%;">
+                                        <div class="column-50" style="width:55%; border:1px solid black">
+                                            <div class="column-top">
+                                                <p style="padding-left:10px; font_size:12px;">Items:
+                                                    <span t-esc="item - 1"/>
+                                                    <br></br>
+                                                    <br></br>
+                                                    Observaciones:
+                                                    <span t-esc="o.comment"/>
+                                                    <br></br>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="column-50" style="width:45%;">
+                                            <t t-set="tax_totals" t-value="o.tax_totals"/>
+                                            <t t-call="account.document_tax_totals_company_currency_template"/>
+
+                                            <!--p style="width:90%; padding-left:10px; margin:auto; height:30px; border:1px solid black;">
+                                                <b>Subtotal:</b>
+                                                <span t-esc="o.currency_id.name"/>
+                                                <span t-esc="o.amount_untaxed_signed * -1"
+                                                      t-options="{'widget': 'float', 'format':'#,##0', 'precision':2}"/>
+                                            </p>
+                                            <br></br>
+                                            <t t-set="iva_total" t-value="0"/>
+                                            <t t-set="retefuen_total" t-value="0"/>
+                                            <t t-set="total" t-value="0"/>
+                                            <table style="width:90%; margin:auto;"
+                                                   class="table table-bordered border-dark"
+                                                   add="small">
+                                                <t t-set="tax_totals" t-value="o.tax_totals"/>
+                                                <t t-foreach="tax_totals['subtotals']" t-as="subtotal">
+                                                    <tr class="border-black o_subtotal">
+                                                        <td>
+                                                            <strong t-esc="subtotal['name']"/>
+                                                        </td>
+
+                                                        <td class="text-right">
+                                                            <span
+                                                                    t-att-class="oe_subtotal_footer_separator"
+                                                                    t-esc="subtotal['formatted_amount']"
+                                                            />
+                                                        </td>
+                                                    </tr>
+
+                                                    <t t-set="subtotal_to_show" t-value="subtotal['name']"/>
+                                                    <t t-call="account.tax_groups_totals"/>
+                                                </t>
+
+                                                <tr class="border-black o_total">
+                                                    <td>
+                                                        <strong>Total</strong>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <span t-esc="tax_totals['formatted_amount_total']"/>
+                                                    </td>
+                                                </tr>
+
+                                            </table-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="footer">
+                                <t t-if="o.l10n_co_edi_cufe_cude_ref">
+                                    <div id="cude" name="cude">
+                                        <table class="table" style="width:100%">
+                                            <tr>
+                                                <td style="width:80%">
+                                                    <p style="font-size: 8.5pt;">
+                                                        Este documento corresponde a la representación gráfica
+                                                        de una
+                                                        Nota Credito electrónica.
+                                                        <br/>
+                                                        Confirme el CUDE mediante lectura de este código
+                                                        bidimensional:
+                                                        <br/>
+                                                        CUDE:
+                                                        <span t-field="o.l10n_co_edi_cufe_cude_ref"/>
+                                                        <br/>
+                                                        <span class="text-left" style="font-size: 8.5pt;">
+                                                            Proveedor
+                                                            tecnológico: Comercio Electrónico en Internet CENET
+                                                            S.A. NIT
+                                                            830057860 Software: misfacturas
+                                                        </span>
+                                                    </p>
+                                                </td>
+                                                <td style="width:20%">
+                                                    <img t-if="dian_values.get('barcode_src')" t-attf-src="dian_values.get('barcode_src')"
+                                                         t-field-options="{&quot;class&quot;: &quot;oe_avatar&quot;}"
+                                                         class="img-fluid"
+                                                         style="max-height:100pt;max-width:100pt"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                </t>
+                            </div>
+                        </div>
+
+                    </t>
+
+                </t>
+
+            </t>
+
+        </template>
+
+        <template id="report_invoice" inherit_id="account.report_invoice">
+            <xpath expr="//t[@t-call='account.report_invoice_document']" position="after">
+                <t t-if="o._get_name_invoice_report() == 'customize_blacksip.report_invoices_intello'"
+                        t-call="customize_blacksip.report_invoices_intello" t-lang="lang" />
+            </xpath>
+        </template>
+    </data>
+</odoo>
+
+
+
