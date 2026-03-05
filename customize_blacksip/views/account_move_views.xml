@@ -16,6 +16,10 @@
                     <field name="trm"/>
                     <field name="cost_center"/>
                 </xpath>
+
+                <xpath expr="//field[@name='invoice_line_ids']/list/field[@name='name']" position="after">
+                    <field name="blacksip_name" optional="show"/>
+                </xpath>
             </field>
         </record>
     </data>

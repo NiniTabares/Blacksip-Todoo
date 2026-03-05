@@ -1,6 +1,4 @@
 from odoo import fields, models, api
-from odoo.odoo.odoo.tools.date_utils import date
-
 
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
@@ -8,6 +6,17 @@ class AccountMoveLine(models.Model):
     commercial = fields.Many2one("hr.employee", "Commercial")
     brand = fields.Char("Brand")
     csp = fields.Char("C.S.P.")
+    blacksip_name = fields.Char("Description", compute="_compute_blacksip_name", inverse="_inverse_blacksip_name")
+    
+    def _inverse_blacksip_name(self):
+        for line in self:
+            if line.blacksip_name:
+                line.name = line.blacksip_name
+
+    @api.depends('name')
+    def _compute_blacksip_name(self):
+        for line in self:
+            line.blacksip_name = line.name
 
 
     @api.depends('product_id', 'move_id.ref', 'move_id.payment_reference')
@@ -26,7 +35,7 @@ class AccountMoveLine(models.Model):
                 if product.description_sale:
                     values.append(product.description_sale)
             return '\n'.join(values) if values else False
-        sale_move_lines = self.filtered(lambda l: l.journal_id.type == 'sale')
+        sale_move_lines = self.filtered(lambda l: l.journal_id.type == 'sale' and l.company_id.country_id.code == 'CO')
         other_move_lines = self - sale_move_lines
         super(AccountMoveLine, other_move_lines)._compute_name()
         if sale_move_lines:
