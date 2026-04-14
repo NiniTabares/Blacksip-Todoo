@@ -33,6 +33,6 @@ class AccountMove(models.Model):
 
     def _get_name_invoice_report(self):
         res = super(AccountMove, self)._get_name_invoice_report()
-        if self.company_id.vat in ['805030145-8', '8050301458'] and self.move_type in ['out_invoice', 'out_refund']:
+        if self.company_id.vat in ['805030145-8', '8050301458'] and self.move_type in ['out_invoice']:
             res = 'customize_blacksip.report_invoices_intello'
         return res
