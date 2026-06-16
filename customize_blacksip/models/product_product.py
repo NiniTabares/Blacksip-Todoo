@@ -10,5 +10,5 @@ class ProductProduct(models.Model):
             if self.description_sale:
                 name = self.description_sale
             else:
-                name = False
+                name = self.name
             return name
