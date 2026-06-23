@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_saleorder_document">
+    <t t-if="not o" t-set="o" t-value="doc"/>
+
+    <t t-if="not company">
+        <t t-if="company_id">
+            <t t-set="company" t-value="company_id"/>
+        </t>
+        <t t-elif="o and 'company_id' in o and o.company_id.sudo()">
+            <t t-set="company" t-value="o.company_id.sudo()"/>
+        </t>
+        <t t-else="else">
+            <t t-set="company" t-value="res_company"/>
+        </t>
+    </t>
+    <t t-set="o" t-value="o.with_context(lang=lang)" />
+
+    <div class="header" style="font-family: Arial, sans-serif;">
+        <!-- ═══ ENCABEZADO: Logo | Datos empresa | Título documento ═══ -->
+        <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+                <!-- Logo -->
+                <td style="width: 30%; vertical-align: middle; padding: 0 10px 8px 0;">
+                    <img t-if="company.logo"
+                         t-att-src="image_data_uri(company.logo)"
+                         style="max-height: 65px;" alt="Logo"/>
+                </td>
+                <!-- Datos de la empresa -->
+                <td style="width: 40%; vertical-align: middle; padding: 0 10px 8px 10px;
+                            border-left: 1px solid #ccc; line-height: 1.6;">
+                    <strong style="font-size: 18px; color: #8c8c8c;"><span t-field="company.name"/></strong><br/>
+                    NIT: <span t-field="company.vat"/><br/>
+                    <span t-field="company.street"/><br/>
+                    <span t-field="company.city"/>, <span t-field="company.state_id.name"/><br/>
+                    Teléfono <span t-field="company.phone"/>
+                </td>
+                <!-- Título y número de documento -->
+                <td style="width: 60%; vertical-align: middle; text-align: right; padding: 0 0 8px 10px;">
+                    <div style="font-size: 22px; font-weight: bold; letter-spacing: 1px; color: #8c8c8c;">ORDEN DE SERVICIO</div>
+                    <div style="font-weight: bold; margin-top: 3px;">
+                        <span t-field="o.partner_id.commercial_partner_id.name"/>
+                    </div>
+                    <div style="font-size: 18px; font-weight: bold; margin-top: 5px; color: #8c8c8c;">
+                        No. <span t-esc="o.brand_number or o.name"/>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="article" style="font-family: Arial, sans-serif;"
+         t-att-data-oe-model="o and o._name"
+         t-att-data-oe-id="o and o.id"
+         t-att-data-oe-lang="o and o.env.context.get('lang')">
+         <style>
+            .bs-info       { width: 100%; border: 1px solid #000000 !important; }
+            .bs-info th  { background: #f3f3f3; font-weight: bold; text-align: left; padding: 3px 5px;
+                            border-bottom: 1px solid #000000; }
+            .bs-info td    { padding: 2px 5px; border-bottom: 1px solid #000000; vertical-align: top; }
+            .bs-info .lbl  { font-weight: bold; white-space: nowrap; width: 44%; }
+            .bs-svc        { width: 100%; border-collapse: collapse;}
+            .bs-svc th     { border: 1px solid #000000; padding: 4px 3px; background: #e8e8e8; }
+            .bs-svc td     { border: 1px solid #000000; padding: 3px 4px; vertical-align: top; }
+            .bs-svc .desc  { color: #333; margin-top: 2px; }
+            .bs-totals     { width: 100%; border: 1px solid #000000; }
+            .bs-totals td  { padding: 3px 7px; }
+            .bs-sign td    { text-align: center; padding: 3px 8px; }
+        </style>
+        <div class="page">
+            <!-- ═══ FILA 1: Datos del cliente | Contacto responsable ═══ -->
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 6px;">
+                <tr>
+                    <td style="width: 50%; padding-right: 4px; vertical-align: top;">
+                        <table class="bs-info">
+                            <tr><th colspan="2" class="text-center">DATOS DEL CLIENTE</th></tr>
+                            <tr>
+                                <td class="lbl">Empresa:</td>
+                                <td><span t-field="o.partner_id.commercial_partner_id.name"/></td>
+                            </tr>
+                            <tr>
+                                <td class="lbl">NIT:</td>
+                                <td><span t-if="o.partner_id.vat" t-field="o.partner_id.vat"/></td>
+                            </tr>
+                            <tr>
+                                <td class="lbl">Teléfono:</td>
+                                <td><span t-if="o.partner_id.phone" t-field="o.partner_id.phone"/></td>
+                            </tr>
+                            
+                        </table>
+                    </td>
+                    <td style="width: 50%; padding-left: 4px; vertical-align: top;">
+                        <!--t-set t-value="o.customer_contact_id or o.partner_id" t-as="customer_contact"/-->
+                        <table class="bs-info">
+                            <tr><th colspan="2" class="text-center">CONTACTO RESPONSABLE CLIENTE</th></tr>
+                            <tr>
+                                <td class="lbl">Nombre:</td>
+                                <td><span t-field="o.customer_contact_id.name"/></td>
+                            </tr>
+                            <tr>
+                                <td class="lbl">Cargo:</td>
+                                <td><span t-if="o.customer_contact_id.function" t-field="o.customer_contact_id.function"/></td>
+                            </tr>
+                            <tr>
+                                <td class="lbl">Teléfono:</td>
+                                <td>
+                                    <span t-if="o.customer_contact_id.mobile" t-field="o.customer_contact_id.mobile"/>
+                                    <span t-elif="o.customer_contact_id.phone" t-field="o.customer_contact_id.phone"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="lbl">Marca</td>
+                                <!-- Campo personalizado: agregar brand_id a sale.order -->
+                                <td><t t-if="'brand_id' in o._fields"><span t-field="o.brand_id.name"/></t></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- ═══ FILA 2: Proyecto / Campaña | Contacto Blacksip ═══ -->
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px;">
+                <tr>
+                    <td style="width: 50%; padding-right: 4px; vertical-align: top;">
+                        <table class="bs-info">
+                            <tr><th colspan="2" class="text-center">INFORMACIÓN DEL PROYECTO / ACTIVIDAD / CAMPAÑA</th></tr>
+                            <tr>
+                                <td class="lbl">Actividad / Proyecto:</td>
+                                <!-- Campo personalizado: agregar campaign_id a sale.order -->
+                                <td><t t-if="'campaign_id' in o._fields"><span t-field="o.campaign_id.name"/></t></td>
+                            </tr>
+                            <tr>
+                                <td class="lbl">Fecha de inicio:</td>
+                                <td><span t-field="o.date_order" t-options='{"widget": "date"}'/></td>
+                            </tr>
+                            <tr>
+                                <td class="lbl">Duración estimada:</td>
+                                <!-- Campo personalizado: agregar estimated_duration a sale.order -->
+                                <td><t t-if="'estimated_duration' in o._fields"><span t-field="o.estimated_duration"/></t></td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="width: 50%; padding-left: 4px; vertical-align: top;">
+                        <!--t-set t-value="o.responsible_contact_id or o.user_id.partner_id" t-as="responsible_contact"/-->
+                        <table class="bs-info">
+                            <tr><th colspan="2" class="text-center">CONTACTO RESPONSABLE EN BLACKSIP</th></tr>
+                            <tr>
+                                <td class="lbl">Nombre:</td>
+                                <td><span t-field="o.responsible_contact_id.name"/></td>
+                            </tr>
+                            <tr>
+                                <td class="lbl">Cargo:</td>
+                                <td><span t-if="o.responsible_contact_id.function" t-field="o.responsible_contact_id.function"/></td>
+                            </tr>
+                            <tr>
+                                <td class="lbl">Teléfono:</td>
+                                <td><span t-if="o.responsible_contact_id.phone" t-field="o.responsible_contact_id.phone"/></td>
+                            </tr>
+                            <tr>
+                                <td class="lbl">CSP</td>
+                                <!-- Campo personalizado: agregar csp_id a sale.order -->
+                                <td><t t-if="'csp_id' in o._fields"><span t-field="o.csp_id.name"/></t></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- ═══ TABLA DE SERVICIOS ═══ -->
+            <t t-set="lines_to_report" t-value="o._get_order_lines_to_report()"/>
+            <table class="bs-svc" style="margin-bottom: 10px;">
+                <thead>
+                    <tr>
+                        <th style="width: 7%;  text-align: center;">COD</th>
+                        <th style="width: 5%;  text-align: center;">QTY</th>
+                        <th style="text-align: left;">DESCRIPCIÓN DEL SERVICIO</th>
+                        <th style="width: 11%; text-align: right;">NETO</th>
+                        <th style="width: 7%;  text-align: center;">(%) DTO</th>
+                        <th style="width: 7%;  text-align: center;">(%) IVA</th>
+                        <th style="width: 13%; text-align: right;">SUBTOTAL (SIN IVA)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="lines_to_report" t-as="line">
+
+                        <!-- Línea de producto normal -->
+                        <t t-if="not line.display_type">
+                            <tr>
+                                <td style="text-align: center; vertical-align: top;">
+                                    <span t-if="line.product_id.default_code"
+                                          t-field="line.product_id.default_code"/>
+                                </td>
+                                <td style="text-align: center; vertical-align: top;">
+                                    <span t-field="line.product_uom_qty"
+                                          t-options='{"widget": "integer"}'/>
+                                </td>
+                                <td style="vertical-align: top;">
+                                    <strong><span t-field="line.name"/></strong>
+                                    <!--div class="desc-sub" t-if="line.name">
+                                        <span t-field="line.name"/>
+                                    </div-->
+                                </td>
+                                <td style="text-align: right; vertical-align: top; white-space: nowrap;">
+                                    <span t-field="line.price_unit"
+                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </td>
+                                <td style="text-align: center; vertical-align: top;">
+                                    <!--span
+                                        t-if="line.discount &lt; 0"
+                                        t-out="(1 - line.discount / 100.0) * line.price_unit" t-options='{"widget": "float", "decimal_precision": "Product Price"}'
+                                    /-->
+                                    <span t-field="line.discount"/>
+                                </td>
+                                <td style="text-align: center; vertical-align: top;">
+                                    <t t-set="taxes" t-value="', '.join([(tax.invoice_label or tax.name) for tax in line.tax_id])"/>
+                                    <span t-out="taxes">Tax 15%</span>
+                                </td>
+                                <td style="text-align: right; vertical-align: top; white-space: nowrap;">
+                                    <span t-field="line.price_subtotal"
+                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </td>
+                            </tr>
+                        </t>
+
+                        <!-- Sección -->
+                        <t t-elif="line.display_type == 'line_section'">
+                            <tr>
+                                <td colspan="7" style="font-weight: bold; border-top: 1px solid #999; padding: 4px;">
+                                    <span t-field="line.name"/>
+                                </td>
+                            </tr>
+                        </t>
+
+                        <!-- Nota -->
+                        <t t-elif="line.display_type == 'line_note'">
+                            <tr>
+                                <td colspan="7" style="font-style: italic; padding: 4px;">
+                                    <span t-field="line.name"/>
+                                </td>
+                            </tr>
+                        </t>
+
+                    </t>
+                </tbody>
+            </table>
+
+            <!-- ═══ OBSERVACIONES Y TOTALES ═══ -->
+            <table class="bs-totals" style="margin-bottom: 14px;">
+                <tr>
+                    <!-- Columna izquierda: observaciones y condiciones -->
+                    <td style="width: 54%; vertical-align: top; border-right: 1px solid #000; padding: 6px;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <td style="font-weight: bold; padding: 2px 0; width: 46%;">Observaciones:</td>
+                                <td style="padding: 2px 0;">
+                                    <t t-if="o.note"><span t-field="o.note"/></t>
+                                    <t t-else="">-</t>
+                                </td>
+                            </tr>
+                            <tr><td colspan="2" style="height: 14px;"/></tr>
+                            <tr>
+                                <td style="font-weight: bold; padding: 2px 0;">Forma de facturación:</td>
+                                <td style="padding: 2px 0;">
+                                    <!-- Campo personalizado: agregar x_forma_facturacion a sale.order -->
+                                    <!--t t-if="'x_forma_facturacion' in o._fields">
+                                        <span t-field="o.x_forma_facturacion"/>
+                                    </t-->
+                                    <span t-if="o.payment_term_id" t-field="o.payment_term_id.name"/>
+                                </td>
+                            </tr>
+                            <tr><td colspan="2" style="height: 14px;"/></tr>
+                            <tr>
+                                <td style="font-weight: bold; padding: 2px 0;">Términos de pago:</td>
+                                <td style="padding: 2px 0;">
+                                    <span t-if="o.payment_term_id" t-field="o.payment_term_id.name"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <!-- Columna derecha: montos -->
+                    <td style="width: 46%; vertical-align: top; padding: 0;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <td style="padding: 3px 8px;">Neto:</td>
+                                <td style="padding: 3px 8px; text-align: right; white-space: nowrap;">
+                                    <span t-field="o.amount_untaxed"
+                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 3px 8px;">Descuentos:</td>
+                                <td style="padding: 3px 8px; text-align: right;">                                    
+                                    <span t-esc="o.amount_untaxed - o.amount_undiscounted"
+                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </td>
+                            </tr>
+                            <tr style="border-top: 1px solid #000;">
+                                <td style="padding: 3px 8px;">Subtotal (sin IVA):</td>
+                                <td style="padding: 3px 8px; text-align: right; white-space: nowrap;">
+                                    <span t-field="o.amount_untaxed"
+                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 3px 8px;">Impuesto a las ventas (IVA):</td>
+                                <td style="padding: 3px 8px; text-align: right; white-space: nowrap;">
+                                    <span t-field="o.amount_tax"
+                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </td>
+                            </tr>
+                            <tr style="border-top: 2px solid #000;">
+                                <td style="padding: 4px 8px; font-weight: bold;">Gran total:</td>
+                                <td style="padding: 4px 8px; text-align: right; font-weight: bold; white-space: nowrap;">
+                                    <span t-field="o.amount_total"
+                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- ═══ FIRMAS ═══ -->
+            <table class="bs-sign" style="width: 100%; border-collapse: collapse; margin-top: 24px;">
+                <!-- Líneas de firma -->
+                <tr>
+                    <td style="width: 33%; padding-top: 28px; padding-bottom: 0; border-bottom: 1px solid #000;"/>
+                    <td style="width: 4%;"/>
+                    <td style="width: 26%; padding-top: 28px; padding-bottom: 0; border-bottom: 1px solid #000;"/>
+                    <td style="width: 4%;"/>
+                    <td style="width: 33%; padding-top: 28px; padding-bottom: 0; border-bottom: 1px solid #000;"/>
+                </tr>
+                <!-- Nombres -->
+                <tr>
+                    <td style="text-align: center; padding: 3px 4px;">
+                        <span t-esc="o.customer_contact_id.name or o.partner_id.name"/>
+                    </td>
+                    <td/>
+                    <td style="text-align: center; padding: 3px 4px;">
+                        <span t-field="o.date_order" t-options='{"widget": "date"}'/>
+                    </td>
+                    <td/>
+                    <td style="text-align: center; padding: 3px 4px;">
+                        <span t-esc="o.responsible_contact_id.name or o.user_id.name"/>
+                    </td>
+                </tr>
+                <!-- Etiquetas -->
+                <tr>
+                    <td style="text-align: center; padding: 0 4px;">Nombre y firma del cliente (Autorizado)</td>
+                    <td/>
+                    <td style="text-align: center; padding: 0 4px;">Fecha de elaboración</td>
+                    <td/>
+                    <td style="text-align: center; padding: 0 4px;">
+                        <!--span t-if="o.user_id.job_title" t-field="o.user_id.job_title"/-->
+                        <!--t t-else="">Growth Business Partner</t-->
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+
+    <div t-attf-class="footer o_standard_footer" style="font-family: Arial, sans-serif;">
+        <div class="text-center">
+            <div t-field="company.report_footer">Company Report Footer</div>
+            <div t-if="report_type == 'pdf'">
+                Page: <span class="page"/> / <span class="topage"/>
+            </div>
+            <div t-if="report_type == 'pdf' and display_name_in_footer" class="text-muted">
+                <span t-out="o.name">(document name)</span>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="report_saleorder_raw">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="customize_blacksip.report_saleorder_document" t-lang="doc.partner_id.lang"/>
+        </t>
+    </t>
+</template>
+
+<template id="report_saleorder" inherit_id="sale.report_saleorder">
+    <xpath expr="//t[@t-call='sale.report_saleorder_raw']" position="attributes">
+         <attribute name="t-if">not env.company.blacksip_sale_template</attribute>
+    </xpath>
+    <xpath expr="//t[@t-call='sale.report_saleorder_raw']" position="after">
+        <t t-if="env.company.blacksip_sale_template" t-call="customize_blacksip.report_saleorder_raw"/>
+    </xpath>
+</template>
+
+</odoo>

@@ -14,15 +14,18 @@ Add new fields to account.move
     'category': 'Uncategorized',
     'version': '0.2',
 
-    'depends': ['account', 'l10n_co_dian'],
+    'depends': ['account', 'sale', 'l10n_co_dian', 'product_brand'],
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'views/account_move_line_views.xml',
         'views/account_move_views.xml',
         'views/res_company_views.xml',
+        'views/res_config_settings_views.xml',\
+        'views/sale_order_views.xml',
         'report/report_invoice.xml',
+        'report/ir_actions_report_templates.xml',
     ],
 }
 
