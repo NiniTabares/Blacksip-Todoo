@@ -4,7 +4,7 @@ class SaleOrder(models.Model):
     _inherit = "sale.order"
 
     brand_id = fields.Many2one("product.brand", "Brand", help="Select a brand for this sale order if any.")
-    brand_number = fields.Char("Brand Number", help="Optional field to store a brand-specific number or code.", tracking=True)
+    brand_number = fields.Char("Brand Number", help="Optional field to store a brand-specific number or code.", tracking=True, copy=False)
     # CONTACTO RESPONSABLE CLIENTE
     customer_contact_id = fields.Many2one("res.partner", "Customer Contact", help="Select the main contact for this customer.")
     # DURACIÓN ESTIMADA
@@ -14,17 +14,6 @@ class SaleOrder(models.Model):
                                              default=lambda self: self.env.user.partner_id, tracking=True)
     csp_id = fields.Many2one("blacksip.csp", "CSP", help="Select the CSP for this sale order.", tracking=True)
 
-    blacksip_name = fields.Char("Description", compute="_compute_blacksip_name", inverse="_inverse_blacksip_name")
-    
-    def _inverse_blacksip_name(self):
-        for line in self:
-            if line.blacksip_name:
-                line.name = line.blacksip_name
-
-    @api.depends('name')
-    def _compute_blacksip_name(self):
-        for line in self:
-            line.blacksip_name = line.name
 
     @api.onchange('partner_id')
     def _onchange_custom_partner_id(self):
