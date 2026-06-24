@@ -39,7 +39,7 @@
                 <td style="width: 60%; vertical-align: middle; text-align: right; padding: 0 0 8px 10px;">
                     <div style="font-size: 22px; font-weight: bold; letter-spacing: 1px; color: #8c8c8c;">ORDEN DE SERVICIO</div>
                     <div style="font-weight: bold; margin-top: 3px;">
-                        <span t-field="o.partner_id.commercial_partner_id.name"/>
+                        <span t-field="o.brand_id.name"/>
                     </div>
                     <div style="font-size: 18px; font-weight: bold; margin-top: 5px; color: #8c8c8c;">
                         No. <span t-esc="o.brand_number or o.name"/>
@@ -351,8 +351,7 @@
                     <td style="text-align: center; padding: 0 4px;">Fecha de elaboración</td>
                     <td/>
                     <td style="text-align: center; padding: 0 4px;">
-                        <!--span t-if="o.user_id.job_title" t-field="o.user_id.job_title"/-->
-                        <!--t t-else="">Growth Business Partner</t-->
+                        <span t-esc="o.responsible_contact_id.function or o.user_id.partner_id.function"/>
                     </td>
                 </tr>
             </table>

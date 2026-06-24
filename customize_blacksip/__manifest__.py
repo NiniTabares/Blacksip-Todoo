@@ -12,7 +12,7 @@ Add new fields to account.move
     'website': "https://www.grupoyacck.com",
 
     'category': 'Uncategorized',
-    'version': '0.3',
+    'version': '0.4',
 
     'depends': ['account', 'sale', 'l10n_co_dian', 'product_brand'],
 
