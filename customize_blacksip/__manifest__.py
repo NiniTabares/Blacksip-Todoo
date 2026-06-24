@@ -12,7 +12,7 @@ Add new fields to account.move
     'website': "https://www.grupoyacck.com",
 
     'category': 'Uncategorized',
-    'version': '0.2',
+    'version': '0.3',
 
     'depends': ['account', 'sale', 'l10n_co_dian', 'product_brand'],
 
@@ -24,6 +24,7 @@ Add new fields to account.move
         'views/res_company_views.xml',
         'views/res_config_settings_views.xml',\
         'views/sale_order_views.xml',
+        'views/product_brand_view.xml',
         'report/report_invoice.xml',
         'report/ir_actions_report_templates.xml',
     ],

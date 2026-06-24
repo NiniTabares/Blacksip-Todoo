@@ -42,3 +42,9 @@ class SaleOrder(models.Model):
             if order.brand_id and order.brand_id.sequence_id and not order.brand_number:
                 order.brand_number = order.brand_id.sequence_id.next_by_id()
         return res
+    
+    def _prepare_invoice(self):
+        invoice_vals = super()._prepare_invoice()
+        invoice_vals['brand'] = self.brand_id.name
+        invoice_vals['csp'] = self.csp_id.name
+        return invoice_vals
