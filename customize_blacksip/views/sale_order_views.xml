@@ -10,6 +10,7 @@
             <field name="brand_id" options="{'no_create': True}"/>
             <field name="customer_contact_id" options="{'no_create': True}" domain="[('parent_id', '=', partner_id)]"/>
             <field name="responsible_contact_id" options="{'no_create': True}"/>
+            <field name="date_order"/>
             <field name="estimated_duration"/>
             <field name="csp_id" />
             <field name="brand_number" readonly="1"/>
