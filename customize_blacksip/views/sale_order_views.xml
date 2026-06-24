@@ -6,13 +6,13 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
          <xpath expr="//group[@name='sale_reporting']" position="after">
-          <group string="Blacksip Customization" name="blacksip_customization">
-            <field name="brand_id" options="{'no_create': True}"/>
-            <field name="customer_contact_id" options="{'no_create': True}" domain="[('parent_id', '=', partner_id)]"/>
-            <field name="responsible_contact_id" options="{'no_create': True}"/>
-            <field name="date_order"/>
-            <field name="estimated_duration"/>
-            <field name="csp_id" />
+          <group string="Blacksip Customization" name="blacksip_customization" >
+            <field name="brand_id" options="{'no_create': True}" readonly="state != 'draft'"/>
+            <field name="customer_contact_id" options="{'no_create': True}" domain="[('parent_id', '=', partner_id)]" readonly="state != 'draft'"/>
+            <field name="responsible_contact_id" options="{'no_create': True}" readonly="state != 'draft'"/>
+            <field name="date_order" readonly="state != 'draft'"/>
+            <field name="estimated_duration"  readonly="state != 'draft'"/>
+            <field name="csp_id" readonly="state != 'draft'"/>
             <field name="brand_number" readonly="1"/>
           </group>
           </xpath>
