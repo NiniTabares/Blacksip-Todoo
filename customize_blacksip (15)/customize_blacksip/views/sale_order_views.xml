@@ -1,0 +1,30 @@
+<odoo>
+  <data>
+	<record model="ir.ui.view" id="view_order_form">
+        <field name="name">sale.order.form.inherit.customize.blacksip</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+         <xpath expr="//group[@name='sale_reporting']" position="after">
+          <group string="Blacksip Customization" name="blacksip_customization" >
+            <field name="brand_id" options="{'no_create': True}" readonly="state != 'draft'"/>
+            <field name="customer_contact_id" options="{'no_create': True}" domain="[('parent_id', '=', partner_id)]" readonly="state != 'draft'"/>
+            <field name="responsible_contact_id" options="{'no_create': True}" readonly="state != 'draft'"/>
+            <field name="date_order" readonly="state != 'draft'"/>
+            <field name="estimated_duration"  readonly="state != 'draft'"/>
+            <field name="csp_id" readonly="state != 'draft'"/>
+            <field name="brand_number" readonly="1"/>
+          </group>
+          </xpath>
+
+          <xpath expr="//field[@name='order_line']/form//field['name']" position="after">
+            <field name="blacksip_name" />
+          </xpath>
+          <xpath expr="//field[@name='order_line']/list//field['name']" position="after">
+            <field name="blacksip_name"  optional="show" />
+          </xpath>
+        </field>
+    </record>
+
+  </data>
+</odoo>
