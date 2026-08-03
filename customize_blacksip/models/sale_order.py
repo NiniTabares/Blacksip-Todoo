@@ -57,7 +57,7 @@ class SaleOrder(models.Model):
                 order.name = brand_number
         return res
     
-    def action_draft(self):
-        res = super().action_draft()
-        self.write({'brand_number': False})
-        return res
+    # def action_draft(self):
+    #     res = super().action_draft()
+    #     self.write({'brand_number': False})
+    #     return res
