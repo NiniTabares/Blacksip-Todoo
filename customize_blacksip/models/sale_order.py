@@ -43,14 +43,18 @@ class SaleOrder(models.Model):
         oders = super().create(vals_list)
         for order in oders:
             if order.brand_id and order.brand_id.sequence_id and not order.brand_number:
-                order.brand_number = order.brand_id.sequence_id.next_by_id()
+                brand_number = order.brand_id.sequence_id.next_by_id()
+                order.brand_number = brand_number
+                order.name = brand_number
         return oders
     
     def write(self, vals):
         res = super().write(vals)
         for order in self:
             if order.brand_id and order.brand_id.sequence_id and not order.brand_number:
-                order.brand_number = order.brand_id.sequence_id.next_by_id()
+                brand_number = order.brand_id.sequence_id.next_by_id()
+                order.brand_number = brand_number
+                order.name = brand_number
         return res
     
     def action_draft(self):

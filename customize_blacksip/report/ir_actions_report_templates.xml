@@ -16,7 +16,7 @@
     </t>
     <t t-set="o" t-value="o.with_context(lang=lang)" />
 
-    <div class="header" style="font-family: Arial, sans-serif;">
+    <div class="header" style="font-family: Arial, sans-serif; font-size: 11px;">
         <!-- ═══ ENCABEZADO: Logo | Datos empresa | Título documento ═══ -->
         <table style="width: 100%; border-collapse: collapse;">
             <tr>
@@ -49,7 +49,7 @@
         </table>
     </div>
 
-    <div class="article" style="font-family: Arial, sans-serif;"
+    <div class="article" style="font-family: Arial, sans-serif;  font-size: 11px;"
          t-att-data-oe-model="o and o._name"
          t-att-data-oe-id="o and o.id"
          t-att-data-oe-lang="o and o.env.context.get('lang')">
@@ -258,16 +258,13 @@
                                 </td>
                             </tr>
                             <tr><td colspan="2" style="height: 14px;"/></tr>
-                            <tr>
+                            <!--tr>
                                 <td style="font-weight: bold; padding: 2px 0;">Forma de facturación:</td>
                                 <td style="padding: 2px 0;">
-                                    <!-- Campo personalizado: agregar x_forma_facturacion a sale.order -->
-                                    <!--t t-if="'x_forma_facturacion' in o._fields">
-                                        <span t-field="o.x_forma_facturacion"/>
-                                    </t-->
+
                                     <span t-if="o.payment_term_id" t-field="o.payment_term_id.name"/>
                                 </td>
-                            </tr>
+                            </tr-->
                             <tr><td colspan="2" style="height: 14px;"/></tr>
                             <tr>
                                 <td style="font-weight: bold; padding: 2px 0;">Términos de pago:</td>
@@ -359,7 +356,7 @@
         </div>
     </div>
 
-    <div t-attf-class="footer o_standard_footer" style="font-family: Arial, sans-serif;">
+    <div t-attf-class="footer o_standard_footer" style="font-family: Arial, sans-serif;  font-size: 11px;">
         <div class="text-center">
             <div t-field="company.report_footer">Company Report Footer</div>
             <div t-if="report_type == 'pdf'">
