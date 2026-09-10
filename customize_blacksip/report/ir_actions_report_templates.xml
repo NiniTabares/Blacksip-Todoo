@@ -131,7 +131,11 @@
                             </tr>
                             <tr>
                                 <td class="lbl">Fecha de inicio:</td>
-                                <td><span t-field="o.date_order" t-options='{"widget": "date"}'/></td>
+                                <td>
+                                    <span t-if="o.service_start_date"
+                                          t-field="o.service_start_date"
+                                          t-options='{"widget": "date"}'/>
+                                </td>
                             </tr>
                             <tr>
                                 <td class="lbl">Duración estimada:</td>
@@ -334,7 +338,9 @@
                     </td>
                     <td/>
                     <td style="text-align: center; padding: 3px 4px;">
-                        <span t-field="o.date_order" t-options='{"widget": "date"}'/>
+                        <span t-if="o.service_order_date"
+                              t-field="o.service_order_date"
+                              t-options='{"widget": "date"}'/>
                     </td>
                     <td/>
                     <td style="text-align: center; padding: 3px 4px;">
