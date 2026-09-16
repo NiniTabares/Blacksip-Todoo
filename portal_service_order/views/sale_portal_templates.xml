@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Título principal y entrada lateral generada por navspy. -->
+    <template id="sale_order_portal_content_service_order"
+              name="Portal - Título Orden de servicio"
+              inherit_id="sale.sale_order_portal_content"
+              priority="50">
+        <xpath expr="//div[@id='intro_row']/h2/t[@t-out='sale_order.type_name']"
+               position="replace">
+            <t>Orden de servicio</t>
+        </xpath>
+    </template>
+
+    <!-- Migas de navegación para cotizaciones y pedidos de venta. -->
+    <template id="portal_my_home_menu_service_order"
+              name="Portal - Menú Órdenes de servicio"
+              inherit_id="sale.portal_my_home_menu_sale"
+              priority="50">
+
+        <xpath expr="//li[@id='portal_breadcrumbs_sale']/a"
+               position="replace">
+            <a t-if="sale_order"
+               t-attf-href="/my/quotes?{{ keep_query() }}">
+                Órdenes de servicio
+            </a>
+        </xpath>
+
+        <xpath expr="//li[@id='portal_breadcrumbs_sale']/t[@t-else]"
+               position="replace">
+            <t t-else="">Órdenes de servicio</t>
+        </xpath>
+
+        <xpath expr="//li[@id='portal_breadcrumbs_sale']/following-sibling::li[@t-elif][1]/a"
+               position="replace">
+            <a t-if="sale_order"
+               t-attf-href="/my/orders?{{ keep_query() }}">
+                Órdenes de servicio
+            </a>
+        </xpath>
+
+        <xpath expr="//li[@id='portal_breadcrumbs_sale']/following-sibling::li[@t-elif][1]/t[@t-else]"
+               position="replace">
+            <t t-else="">Órdenes de servicio</t>
+        </xpath>
+
+        <xpath expr="//li[@t-if='sale_order' and hasclass('active')]/span[@t-field='sale_order.type_name']"
+               position="replace">
+            <span>Orden de servicio</span>
+        </xpath>
+
+    </template>
+
+</odoo>
+
