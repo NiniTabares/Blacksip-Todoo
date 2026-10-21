@@ -1,0 +1,12 @@
+FACTURA: EXY13332
+  XPATH FALLA: /*/cac:InvoiceLine[1]/cac:WithholdingTaxTotal[2] ['1059.68', '291.41', '291.41'] total 1642.50 suma XPath 1642.5000000000002 decimal correcto True
+  ORDEN PROPUESTO: ['291.41', '291.41', '1059.68']
+  XPATH FALLA: /*/cac:InvoiceLine[3]/cac:WithholdingTaxTotal[2] ['214848.40', '59083.31', '59083.31'] total 333015.02 suma XPath 333015.01999999996 decimal correcto True
+  ORDEN PROPUESTO: ['59083.31', '59083.31', '214848.40']
+  XPATH FALLA: /*/cac:InvoiceLine[4]/cac:WithholdingTaxTotal[2] ['15039.40', '4135.84', '4135.84'] total 23311.08 suma XPath 23311.079999999998 decimal correcto True
+  ORDEN PROPUESTO: ['4135.84', '4135.84', '15039.40']
+  Bloques fallidos antes: 3 | Reordenados: 3 | XPath final: OK
+  Simulación en memoria; archivo firmado original conservado.
+FACTURA: EXY13331
+  Bloques fallidos antes: 0 | Reordenados: 0 | XPath final: OK
+  Simulación en memoria; archivo firmado original conservado.
