@@ -14,7 +14,7 @@ Add new fields to account.move
     'category': 'Uncategorized',
     'version': '0.4',
 
-    'depends': ['account', 'sale', 'l10n_co_dian', 'product_brand', 'sh_merge_sale_order'],
+    'depends': ['account', 'sale', 'l10n_co_dian', 'product_brand', 'sh_merge_sale_order', 'l10n_co_dian'],
 
     # always loaded
     'data': [
